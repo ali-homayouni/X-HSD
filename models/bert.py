@@ -1,6 +1,10 @@
 import torch
 from torch import nn
-from transformers import BertModel, BertForSequenceClassification, RobertaForSequenceClassification
+from transformers import (
+    BertModel, 
+    BertForSequenceClassification, 
+    RobertaForSequenceClassification,
+    )
 
 
 class BERT(nn.Module):
@@ -28,6 +32,26 @@ class RoBERTa(nn.Module):
         super(RoBERTa, self).__init__()
         self.model = RobertaForSequenceClassification.from_pretrained(
             f'roberta-{model_size}',
+            num_labels=num_labels,
+            hidden_dropout_prob=args['hidden_dropout'],
+            attention_probs_dropout_prob=args['attention_dropout']
+        )
+
+        # Freeze embeddings' parameters for saving memory
+        # for param in self.model.roberta.embeddings.parameters():
+        #     param.requires_grad = False
+
+    def forward(self, inputs, lens, mask, labels):
+        outputs = self.model(inputs, attention_mask=mask, labels=labels)
+        loss, logits = outputs[:2]
+        # return loss, logits
+        return logits
+
+class XLM_RoBERTa(nn.Module):
+    def __init__(self, model_size, args, num_labels=2):
+        super(XLM_RoBERTa, self).__init__()
+        self.model = RobertaForSequenceClassification.from_pretrained(
+            f'xlm-roberta-{model_size}',
             num_labels=num_labels,
             hidden_dropout_prob=args['hidden_dropout'],
             attention_probs_dropout_prob=args['attention_dropout']

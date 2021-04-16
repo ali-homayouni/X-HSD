@@ -7,10 +7,10 @@ from config import OLID_PATH
 from cli import get_args
 from utils import load
 from datasets import HuggingfaceDataset, HuggingfaceMTDataset, ImbalancedDatasetSampler
-from models.bert import BERT, RoBERTa
+from models.bert import BERT, RoBERTa, XLM_RoBERTa
 from models.gated import GatedModel
 from models.mtl import MTL_Transformer_LSTM
-from transformers import BertTokenizer, RobertaTokenizer, get_cosine_schedule_with_warmup
+from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup
 from trainer import Trainer
 
 TRAIN_PATH = os.path.join(OLID_PATH, 'olid-training-v1.0.tsv')
@@ -60,6 +60,13 @@ if __name__ == '__main__':
         model_name = model_name.replace('-gate', '')
         model = GatedModel(model_name, model_size, args=args)
         tokenizer = RobertaTokenizer.from_pretrained(f'roberta-{model_size}')
+    elif model_name == 'xlm-roberta':
+        print(f'using xlm-roberta-{model_size} model.')
+        model = XLM_RoBERTa(model_size, args=args, num_labels=num_labels)
+        tokenizer = XLMRobertaTokenizer.from_pretrained(f'xlm-roberta-base')
+        assert tokenizer != None
+    else :
+        raise Exception(f'Unexpected model., model_name : {model_name}')
 
     # Move model to correct device
     model = model.to(device=device)
