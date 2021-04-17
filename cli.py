@@ -11,7 +11,7 @@ def get_args():
     parser.add_argument('-tr', '--truncate', help='Truncate the sequence length to', type=int, required=False, default=512)
     parser.add_argument('-pa', '--patience', help='Patience to stop training', type=int, required=False, default=5)
     parser.add_argument('-cu', '--cuda', help='Cude device number', type=str, required=False, default='0')
-    parser.add_argument('-ta', '--task', help='Which subtask to run', type=str, required=True)
+    parser.add_argument('-ta', '--task', help='Which subtask to run', type=str, required=True, default='a')
     parser.add_argument('-mo', '--model', help='Which model to use', type=str, required=True)
     parser.add_argument('-ms', '--model-size', help='Which size of model to use', type=str, required=False, default='base')
     parser.add_argument('-cl', '--clip', help='Use clip to gradients', action='store_true')
@@ -31,6 +31,9 @@ def get_args():
     parser.add_argument('-nl', '--num-layers', help='num of layers of LSTM', type=int, required=False, default=1)
     parser.add_argument('-hs', '--hidden-size', help='hidden vector size of LSTM', type=int, required=False, default=300)
     parser.add_argument('-hcm', '--hidden-combine-method', help='how to combbine hidden vectors in LSTM', type=str, required=False, default='concat')
+    
+    # DATA
+    parser.add_argument('-dt', '--dataset', help='en/de/en+de', type=str, required=True, default='en')
 
     args = vars(parser.parse_args())
     return args
