@@ -1,10 +1,11 @@
 import torch
 from torch.utils.data import Dataset
-from config import LABEL_DICT_OLID, LABEL_DICT_GERMEVAL
+from config import *
 
 LABEL_DICT = {
     'en': LABEL_DICT_OLID,
     'de': LABEL_DICT_GERMEVAL,
+    'en_de': LABEL_DICT_EN_DE,
 }
 class HuggingfaceDataset(Dataset):
     def __init__(self, input_ids, lens, mask, labels, task, data='en'):

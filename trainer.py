@@ -122,8 +122,8 @@ class Trainer():
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
 
-        print(f'loss = {loss:.4f}')
-        print(f'Macro-F1 = {f1:.4f}')
+        print(f'Train loss = {loss:.4f}')
+        print(f'Train Macro-F1 = {f1:.4f}')
 
         self.train_losses.append(loss)
         self.train_f1.append(f1)
@@ -164,8 +164,8 @@ class Trainer():
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
 
-        print(f'loss = {loss:.4f}')
-        print(f'Macro-F1 = {f1:.4f}')
+        print(f'Test loss = {loss:.4f}')
+        print(f'Test Macro-F1 = {f1:.4f}')
 
         self.test_losses.append(loss)
         self.test_f1.append(f1)

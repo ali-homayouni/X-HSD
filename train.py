@@ -13,11 +13,13 @@ from trainer import Trainer
 
 DATASET_DICT = {
     'en': 'olid-training-v1.0.tsv',
-    'de': 'germeval2018.training.txt' 
+    'de': 'germeval2018.training.txt',
+    'en_de': 'dummy' 
 }
 DATASET_PATH = {
     'en': OLID_PATH,
-    'de': GERMEVAL_PATH, 
+    'de': GERMEVAL_PATH,
+    'en_de': "dummy" 
 }
 
 if __name__ == '__main__':

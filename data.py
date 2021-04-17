@@ -11,6 +11,12 @@ DATASET_PATH = {
     'en': OLID_PATH,
     'de': GERMEVAL_PATH, 
 }
+DATASET_DICT = {
+    'en': 'olid-training-v1.0.tsv',
+    'de': 'germeval2018.training.txt',
+    'de_ts' : 'germeval2018.test.txt',
+    'en_ts' : 'germeval2018.test.txt',
+}
 
 wordsegment.load()
 
@@ -27,6 +33,8 @@ def read_file(filepath: str, data='en'):
         label_b = df['subtask_b'].values
         label_c = np.array(df['subtask_c'].values)
 
+        nums = len(df)
+
     elif data=='de':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False, header=None)
 
@@ -38,10 +46,42 @@ def read_file(filepath: str, data='en'):
         label_a = np.array(df[1].values)
         label_b = df[2].values
         label_c = None
+
+        nums = len(df)
+
+    elif data=='en_de':
+        ## ENG
+        filepath_en = os.path.join(DATASET_PATH['en'], DATASET_DICT['en']) 
+        df_en = pd.read_csv(filepath_en, sep='\t', keep_default_na=False)
+
+        ## DE
+        filepath_de = os.path.join(DATASET_PATH['de'], DATASET_DICT['de'])
+        df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
+        
+        ## IDS
+        ids_en = list(df_en['id'].values)
+        ids_de = list(range(1,len(df_de)+1))
+        ids = np.array(ids_en + ids_de)
+        
+        ## TWEETS
+        tweets_en = list(df_en['tweet'].values)
+        tweets_de = list(df_de[0].values)
+        tweets = np.array(tweets_en + tweets_de)
+        tweets = process_tweets(tweets)
+
+        # Process tweets
+        label_a_en = list(df_en['subtask_a'].values)
+        label_a_de = list(df_de[1].values)
+        label_a = np.array(label_a_en + label_a_de)
+
+        nums = len(df_en) + len(df_de)
+
+
+        label_b = None
+        label_c = None
+
     else :
         raise Exception(f'Unexpected dataset, data : {data}')
-
-    nums = len(df)
 
     return nums, ids, tweets, label_a, label_b, label_c
 
@@ -52,16 +92,44 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
         ids = np.array(df1['id'].values)
         tweets = np.array(df1['tweet'].values)
         labels = np.array(df2['label'].values)
+        nums = len(df1)
+
     elif data == 'de':
         data_path = os.path.join(DATASET_PATH[data], 'germeval2018.test.txt')
         df1 = pd.read_csv(data_path, sep='\t', keep_default_na=False, header=None)
         ids = np.array(range(1,len(df1)+1))
         tweets = np.array(df1[0].values)
         labels = np.array(df1[1].values)
+        nums = len(df1)
+
+    elif data=='en_de':
+        ## ENG 
+        df_en = pd.read_csv(os.path.join(DATASET_PATH['en'], 'testset-level' + task + '.tsv'), sep='\t')
+        df2 = pd.read_csv(os.path.join(DATASET_PATH['en'], 'labels-level' + task + '.csv'), sep=',')
+        ## DE 
+        filepath_de = os.path.join(DATASET_PATH['de'], DATASET_DICT['de_ts'])
+        df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
+
+
+        tweets_en = list(df_en['tweet'].values)
+        tweets_de = list(df_de[0].values)
+        tweets = np.array(tweets_en+ tweets_de)
+
+        ids_en = list(df_en['id'].values)
+        ids_de = list(range(1,len(df_de)+1))
+        ids = np.array(ids_en + ids_de)
+
+        # Process tweets
+        label_a_en = list(df2['label'].values)
+        label_a_de = list(df_de[1].values)
+        labels = np.array(label_a_en + label_a_de)
+
+
+        nums = len(df_en) + len(df_de)
+
     else:
         raise Exception(f'Unexpected dataset, data : {data}')
 
-    nums = len(df1)
 
     # Process tweets
     tweets = process_tweets(tweets)

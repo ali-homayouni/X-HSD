@@ -10,3 +10,6 @@ LABEL_DICT_GERMEVAL = {
     'a': {'OFFENSE': 0, 'OTHER': 1},
     'b': {'OTHER': 0, 'INSULT': 1, 'PROFANITY': 2, 'ABUSE': 3},
 }
+LABEL_DICT_EN_DE = {
+    'a': {'OFFENSE': 0, 'OTHER': 1, 'OFF': 0, 'NOT': 1},
+}
