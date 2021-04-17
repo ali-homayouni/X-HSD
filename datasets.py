@@ -26,25 +26,6 @@ class HuggingfaceDataset(Dataset):
         label = torch.tensor(this_LABEL_DICT[self.labels[idx]])
         return input, length, mask, label
 
-# class HuggingfaceMTDataset(Dataset):
-#     def __init__(self, input_ids, lens, mask, labels, task):
-#         self.input_ids = torch.tensor(input_ids)
-#         self.lens = lens
-#         self.mask = torch.tensor(mask, dtype=torch.float32)
-#         self.labels = labels
-
-#     def __len__(self):
-#         return self.labels['a'].shape[0]
-
-#     def __getitem__(self, idx):
-#         input = self.input_ids[idx]
-#         mask = self.mask[idx]
-#         length = self.lens[idx]
-#         label_A = torch.tensor(LABEL_DICT_OLID['a'][self.labels['a'][idx]])
-#         label_B = torch.tensor(LABEL_DICT_OLID['b'][self.labels['b'][idx]])
-#         label_C = torch.tensor(LABEL_DICT_OLID['c'][self.labels['c'][idx]])
-#         return input, length, mask, label_A, label_B, label_C
-
 class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):
     """
     Samples elements randomly from a given list of indices for imbalanced dataset

@@ -11,7 +11,7 @@ from sklearn.metrics import f1_score
 from tqdm import tqdm
 # Local files
 from utils import save
-from config import LABEL_DICT
+from config import LABEL_DICT_OLID
 
 class Trainer():
     '''
@@ -63,7 +63,7 @@ class Trainer():
         self.best_test_f1_m = np.array([0, 0, 0], dtype=np.float64)
 
     def train(self):
-        for epoch in range(self.epochs):
+        for epoch in range(1, self.epochs+1):
             print(f'Epoch {epoch}')
             print('=' * 20)
             self.train_one_epoch()

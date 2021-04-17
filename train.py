@@ -13,7 +13,7 @@ from trainer import Trainer
 
 DATASET_DICT = {
     'en': 'olid-training-v1.0.tsv',
-    'de': './GermEval2018/germeval2018.training.txt' 
+    'de': 'germeval2018.training.txt' 
 }
 DATASET_PATH = {
     'en': OLID_PATH,
@@ -97,14 +97,16 @@ if __name__ == '__main__':
             lens=lens,
             mask=mask,
             labels=labels,
-            task=task
+            task=task,
+            data=dataset
         ),
         'test': _Dataset(
             input_ids=test_token_ids,
             lens=test_lens,
             mask=test_mask,
             labels=test_labels,
-            task=task
+            task=task,
+            data=dataset
         )
     }
 

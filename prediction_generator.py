@@ -6,7 +6,7 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
-from data import task_a, task_b, task_c, all_tasks, read_test_file, read_test_file_all, process_tweets, get_mask, get_lens, pad_sents
+from data import process_tweets, get_mask, get_lens, pad_sents
 from config import OLID_PATH
 from cli import get_args
 from utils import load
