@@ -8,6 +8,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score
+from sklearn.metrics import classification_report
 from tqdm import tqdm
 # Local files
 from utils import save
@@ -163,7 +164,8 @@ class Trainer():
 
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
-
+        target_names = ['OFF', 'NOT']
+        print(classification_report(labels_all, y_pred_all, target_names=target_names))
         print(f'Test loss = {loss:.4f}')
         print(f'Test Macro-F1 = {f1:.4f}')
 
