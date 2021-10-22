@@ -7,7 +7,7 @@ from config import *
 from cli import get_args
 from utils import load
 from datasets import HuggingfaceDataset, ImbalancedDatasetSampler
-from models.bert import BERT, RoBERTa, XLM_RoBERTa
+from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT
 from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup
 from trainer import Trainer
 
@@ -69,6 +69,16 @@ if __name__ == '__main__':
         print(f'using xlm-roberta-{model_size} model.')
         model = XLM_RoBERTa(model_size, args=args, num_labels=num_labels)
         tokenizer = XLMRobertaTokenizer.from_pretrained(f'xlm-roberta-base')
+        assert tokenizer != None
+    elif model_name == 'bert-multilingual':
+        print(f'using bert-{model_size}-multilingual-uncased model.')
+        model = MultilingualBERT(model_size, args=args, num_labels=num_labels)
+        tokenizer = BertTokenizer.from_pretrained(f'bert-base-multilingual-uncased')
+        assert tokenizer != None
+    elif model_name == 'gebert':
+        print(f'using bert-{model_size}-german-dbmdz-uncased model.')
+        model = GE_BERT(model_size, args=args, num_labels=num_labels)
+        tokenizer = BertTokenizer.from_pretrained(f'bert-base-german-dbmdz-uncased')
         assert tokenizer != None
     else :
         raise Exception(f'Unexpected model., model_name : {model_name}')
