@@ -6,11 +6,11 @@ LABEL_DICT = {
     'en': LABEL_DICT_OLID,
     'de': LABEL_DICT_GERMEVAL,
 
-    'train_en_test_en':LABEL_DICT_OLID,
-    'train_en_test_de':LABEL_DICT_OLID,
-    
-    'train_de_test_de':LABEL_DICT_GERMEVAL,
-    'train_de_test_en':LABEL_DICT_GERMEVAL,
+    'train_en_test_en':LABEL_DICT_EN_DE,
+    'train_en_test_de':LABEL_DICT_EN_DE,
+
+    'train_de_test_de':LABEL_DICT_EN_DE,
+    'train_de_test_en':LABEL_DICT_EN_DE,
 
     'train_ende_test_ende':LABEL_DICT_EN_DE,
     'train_ende_test_en':LABEL_DICT_EN_DE,
