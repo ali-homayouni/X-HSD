@@ -21,7 +21,7 @@ DATASET_DICT = {
 wordsegment.load()
 
 def read_file(filepath: str, data='en'):
-    if data=='en':
+    if data=='tain_en_test_en':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
 
         ids = np.array(df['id'].values)
@@ -35,7 +35,7 @@ def read_file(filepath: str, data='en'):
 
         nums = len(df)
 
-    elif data=='de':
+    elif data=='train_de_test_de':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False, header=None)
 
         ids = np.array(range(1,len(df)+1))
@@ -49,7 +49,7 @@ def read_file(filepath: str, data='en'):
 
         nums = len(df)
 
-    elif data=='en_de':
+    elif data=='train_ende_test_ende':
         ## ENG
         filepath_en = os.path.join(DATASET_PATH['en'], DATASET_DICT['en']) 
         df_en = pd.read_csv(filepath_en, sep='\t', keep_default_na=False)
@@ -80,13 +80,100 @@ def read_file(filepath: str, data='en'):
         label_b = None
         label_c = None
 
+    elif data=='train_ende_test_en':
+          ## ENG
+        filepath_en = os.path.join(DATASET_PATH['en'], DATASET_DICT['en']) 
+        df_en = pd.read_csv(filepath_en, sep='\t', keep_default_na=False)
+
+        ## DE
+        filepath_de = os.path.join(DATASET_PATH['de'], DATASET_DICT['de'])
+        df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
+        
+        ## IDS
+        ids_en = list(df_en['id'].values)
+        ids_de = list(range(1,len(df_de)+1))
+        ids = np.array(ids_en + ids_de)
+        
+        ## TWEETS
+        tweets_en = list(df_en['tweet'].values)
+        tweets_de = list(df_de[0].values)
+        tweets = np.array(tweets_en + tweets_de)
+        tweets = process_tweets(tweets)
+
+        # Process tweets
+        label_a_en = list(df_en['subtask_a'].values)
+        label_a_de = list(df_de[1].values)
+        label_a = np.array(label_a_en + label_a_de)
+
+        nums = len(df_en) + len(df_de)
+
+
+        label_b = None
+        label_c = None
+
+    elif data=='train_en_test_de':
+        df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
+
+        ids = np.array(df['id'].values)
+        tweets = np.array(df['tweet'].values)
+
+        # Process tweets
+        tweets = process_tweets(tweets)
+        label_a = np.array(df['subtask_a'].values)
+        label_b = df['subtask_b'].values
+        label_c = np.array(df['subtask_c'].values)
+
+        nums = len(df)
+    elif data=='train_de_test_en':
+        df = pd.read_csv(filepath, sep='\t', keep_default_na=False, header=None)
+
+        ids = np.array(range(1,len(df)+1))
+
+        tweets = np.array(df[0].values)
+        tweets = process_tweets(tweets)
+
+        label_a = np.array(df[1].values)
+        label_b = df[2].values
+        label_c = None
+
+        nums = len(df)
+    elif data=='train_ende_test_de':
+           ## ENG
+        filepath_en = os.path.join(DATASET_PATH['en'], DATASET_DICT['en']) 
+        df_en = pd.read_csv(filepath_en, sep='\t', keep_default_na=False)
+
+        ## DE
+        filepath_de = os.path.join(DATASET_PATH['de'], DATASET_DICT['de'])
+        df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
+        
+        ## IDS
+        ids_en = list(df_en['id'].values)
+        ids_de = list(range(1,len(df_de)+1))
+        ids = np.array(ids_en + ids_de)
+        
+        ## TWEETS
+        tweets_en = list(df_en['tweet'].values)
+        tweets_de = list(df_de[0].values)
+        tweets = np.array(tweets_en + tweets_de)
+        tweets = process_tweets(tweets)
+
+        # Process tweets
+        label_a_en = list(df_en['subtask_a'].values)
+        label_a_de = list(df_de[1].values)
+        label_a = np.array(label_a_en + label_a_de)
+
+        nums = len(df_en) + len(df_de)
+
+
+        label_b = None
+        label_c = None       
     else :
         raise Exception(f'Unexpected dataset, data : {data}')
 
     return nums, ids, tweets, label_a, label_b, label_c
 
 def read_test_file(task, tokenizer, truncate=512, data='en'):
-    if data == 'en':
+    if data == 'train_en_test_en':
         df1 = pd.read_csv(os.path.join(DATASET_PATH[data], 'testset-level' + task + '.tsv'), sep='\t')
         df2 = pd.read_csv(os.path.join(DATASET_PATH[data], 'labels-level' + task + '.csv'), sep=',')
         ids = np.array(df1['id'].values)
@@ -94,7 +181,7 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
         labels = np.array(df2['label'].values)
         nums = len(df1)
 
-    elif data == 'de':
+    elif data == 'train_de_test_de':
         data_path = os.path.join(DATASET_PATH[data], 'germeval2018.test.txt')
         df1 = pd.read_csv(data_path, sep='\t', keep_default_na=False, header=None)
         ids = np.array(range(1,len(df1)+1))
@@ -102,7 +189,7 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
         labels = np.array(df1[1].values)
         nums = len(df1)
 
-    elif data=='en_de':
+    elif data=='train_ende_test_ende':
         ## ENG 
         df_en = pd.read_csv(os.path.join(DATASET_PATH['en'], 'testset-level' + task + '.tsv'), sep='\t')
         df2 = pd.read_csv(os.path.join(DATASET_PATH['en'], 'labels-level' + task + '.csv'), sep=',')
@@ -124,8 +211,77 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
         label_a_de = list(df_de[1].values)
         labels = np.array(label_a_en + label_a_de)
 
-
         nums = len(df_en) + len(df_de)
+
+    elif data=='train_en_test_de':
+        data_path = os.path.join(DATASET_PATH[data], 'germeval2018.test.txt')
+        df1 = pd.read_csv(data_path, sep='\t', keep_default_na=False, header=None)
+        ids = np.array(range(1,len(df1)+1))
+        tweets = np.array(df1[0].values)
+        labels = np.array(df1[1].values)
+        nums = len(df1)
+
+    elif data=='train_de_test_en':
+        df1 = pd.read_csv(os.path.join(DATASET_PATH[data], 'testset-level' + task + '.tsv'), sep='\t')
+        df2 = pd.read_csv(os.path.join(DATASET_PATH[data], 'labels-level' + task + '.csv'), sep=',')
+        ids = np.array(df1['id'].values)
+        tweets = np.array(df1['tweet'].values)
+        labels = np.array(df2['label'].values)
+        nums = len(df1)
+    
+    elif data=='train_ende_test_en':
+        ## ENG 
+        df_en = pd.read_csv(os.path.join(DATASET_PATH['en'], 'testset-level' + task + '.tsv'), sep='\t')
+        df2 = pd.read_csv(os.path.join(DATASET_PATH['en'], 'labels-level' + task + '.csv'), sep=',')
+        ## DE 
+        filepath_de = os.path.join(DATASET_PATH['de'], DATASET_DICT['de_ts'])
+        df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
+
+
+        tweets_en = list(df_en['tweet'].values)
+        # tweets_de = list(df_de[0].values)
+        # tweets = np.array(tweets_en+ tweets_de)
+        tweets = np.array(tweets_en)
+
+        ids_en = list(df_en['id'].values)
+        # ids_de = list(range(1,len(df_de)+1))
+        # ids = np.array(ids_en + ids_de)
+        ids = np.array(ids_en)
+
+        # Process tweets
+        label_a_en = list(df2['label'].values)
+        # label_a_de = list(df_de[1].values)
+        # labels = np.array(label_a_en + label_a_de)
+        labels = np.array(label_a_en)
+
+        nums = len(df_en)
+
+    elif data=='train_ende_test_de':
+       ## ENG 
+        df_en = pd.read_csv(os.path.join(DATASET_PATH['en'], 'testset-level' + task + '.tsv'), sep='\t')
+        df2 = pd.read_csv(os.path.join(DATASET_PATH['en'], 'labels-level' + task + '.csv'), sep=',')
+        ## DE 
+        filepath_de = os.path.join(DATASET_PATH['de'], DATASET_DICT['de_ts'])
+        df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
+
+
+        # tweets_en = list(df_en['tweet'].values)
+        tweets_de = list(df_de[0].values)
+        # tweets = np.array(tweets_en+ tweets_de)
+        tweets = np.array(tweets_de)
+
+        # ids_en = list(df_en['id'].values)
+        ids_de = list(range(1,len(df_de)+1))
+        # ids = np.array(ids_en + ids_de)
+        ids = np.array(ids_de)
+
+        # Process tweets
+        # label_a_en = list(df2['label'].values)
+        label_a_de = list(df_de[1].values)
+        # labels = np.array(label_a_en + label_a_de)
+        labels = np.array(label_a_de)
+
+        nums = len(df_en)
 
     else:
         raise Exception(f'Unexpected dataset, data : {data}')
