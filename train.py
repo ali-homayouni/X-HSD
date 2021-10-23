@@ -17,7 +17,8 @@ DATASET_DICT = {
     'train_de_test_de': 'germeval2018.training.txt',
     'train_de_test_en': 'germeval2018.training.txt',
     'train_ende_test_en': "dummy",
-    'train_ende_test_de': "dummy" 
+    'train_ende_test_de': "dummy",
+    'train_ende_test_ende': "dummy"
 }
 DATASET_PATH = {
     'train_en_test_en': OLID_PATH,
@@ -25,7 +26,8 @@ DATASET_PATH = {
     'train_de_test_de': GERMEVAL_PATH,
     'train_de_test_en': GERMEVAL_PATH,
     'train_ende_test_en': "dummy",
-    'train_ende_test_de': "dummy"
+    'train_ende_test_de': "dummy",
+    'train_ende_test_ende': "dummy"
 }
 
 if __name__ == '__main__':

@@ -9,11 +9,11 @@ import re
 
 DATASET_PATH = {
     'en': OLID_PATH,
+    'de': GERMEVAL_PATH, 
     'train_en_test_en': OLID_PATH,
     'train_en_test_de': GERMEVAL_PATH,
     'train_de_test_de':GERMEVAL_PATH,
     'train_de_test_en':OLID_PATH,
-    'de': GERMEVAL_PATH, 
 }
 DATASET_DICT = {
     'en': 'olid-training-v1.0.tsv',
