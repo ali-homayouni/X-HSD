@@ -12,14 +12,20 @@ from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, g
 from trainer import Trainer
 
 DATASET_DICT = {
-    'en': 'olid-training-v1.0.tsv',
-    'de': 'germeval2018.training.txt',
-    'en_de': 'dummy' 
+    'train_en_test_en': 'olid-training-v1.0.tsv',
+    'train_en_test_de': 'olid-training-v1.0.tsv',
+    'train_de_test_de': 'germeval2018.training.txt',
+    'train_de_test_en': 'germeval2018.training.txt',
+    'train_ende_test_en': "dummy",
+    'train_ende_test_de': "dummy" 
 }
 DATASET_PATH = {
-    'en': OLID_PATH,
-    'de': GERMEVAL_PATH,
-    'en_de': "dummy" 
+    'train_en_test_en': OLID_PATH,
+    'train_en_test_de': OLID_PATH,
+    'train_de_test_de': GERMEVAL_PATH,
+    'train_de_test_en': GERMEVAL_PATH,
+    'train_ende_test_en': "dummy",
+    'train_ende_test_de': "dummy"
 }
 
 if __name__ == '__main__':
