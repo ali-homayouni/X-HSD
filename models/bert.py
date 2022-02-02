@@ -66,6 +66,26 @@ class XLM_RoBERTa(nn.Module):
         # return loss, logits
         return logits
 
+class ParsBERT(nn.Module):
+    def __init__(self, model_size, args, num_labels=2):
+        super(ParsBERT, self).__init__()
+        self.model = RobertaForSequenceClassification.from_pretrained(
+            f'HooshvareLab/bert-{model_size}-parsbert-uncased',
+            num_labels=num_labels,
+            hidden_dropout_prob=args['hidden_dropout'],
+            attention_probs_dropout_prob=args['attention_dropout']
+        )
+
+        # Freeze embeddings' parameters for saving memory
+        for param in self.model.roberta.embeddings.parameters():
+            param.requires_grad = False
+
+    def forward(self, inputs, lens, mask, labels):
+        outputs = self.model(inputs, attention_mask=mask, labels=labels)
+        loss, logits = outputs[:2]
+        # return loss, logits
+        return logits
+
 class MultilingualBERT(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
         super(MultilingualBERT, self).__init__()
