@@ -29,7 +29,7 @@ DATASET_DICT = {
 wordsegment.load()
 
 def read_file(filepath: str, data='en'):
-    if data=='tain_en_test_en':
+    if data=='train_en_test_en':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
 
         ids = np.array(df['id'].values)
@@ -43,10 +43,10 @@ def read_file(filepath: str, data='en'):
 
         nums = len(df)
 
-    if data=='train_fa_test_fa':
+    elif data=='train_fa_test_fa':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
 
-        ids = ids = np.array(range(1,len(df)+1))
+        ids = np.array(range(1,len(df)+1))
         tweets = np.array(df['tweet'].values)
 
         # Process tweets
