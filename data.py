@@ -11,6 +11,7 @@ DATASET_PATH = {
     'en': OLID_PATH,
     'de': GERMEVAL_PATH, 
     'fa': PERSIAN_PATH,
+    'train_fa_test_fa': PERSIAN_PATH,
     'train_en_test_en': OLID_PATH,
     'train_en_test_de': GERMEVAL_PATH,
     'train_de_test_de':GERMEVAL_PATH,
@@ -42,7 +43,7 @@ def read_file(filepath: str, data='en'):
 
         nums = len(df)
 
-    if data=='tain_fa_test_fa':
+    if data=='train_fa_test_fa':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
 
         ids = ids = np.array(range(1,len(df)+1))
