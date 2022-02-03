@@ -5,9 +5,11 @@ from config import *
 LABEL_DICT = {
     'en': LABEL_DICT_OLID,
     'de': LABEL_DICT_GERMEVAL,
+    'fa': LABEL_DICT_FA,
 
     'train_en_test_en':LABEL_DICT_EN_DE,
     'train_en_test_de':LABEL_DICT_EN_DE,
+    'train_fa_test_fa':LABEL_DICT_FA,
 
     'train_de_test_de':LABEL_DICT_EN_DE,
     'train_de_test_en':LABEL_DICT_EN_DE,
