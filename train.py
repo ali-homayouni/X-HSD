@@ -16,6 +16,7 @@ DATASET_DICT = {
     'train_en_test_de': 'olid-training-v1.0.tsv',
     'train_de_test_de': 'germeval2018.training.txt',
     'train_de_test_en': 'germeval2018.training.txt',
+    'train_fa_test_fa': 'persian_train.csv',
     'train_ende_test_en': "dummy",
     'train_ende_test_de': "dummy",
     'train_ende_test_ende': "dummy"
@@ -25,6 +26,7 @@ DATASET_PATH = {
     'train_en_test_de': OLID_PATH,
     'train_de_test_de': GERMEVAL_PATH,
     'train_de_test_en': GERMEVAL_PATH,
+    'train_fa_test_fa': PERSIAN_PATH,
     'train_ende_test_en': "dummy",
     'train_ende_test_de': "dummy",
     'train_ende_test_ende': "dummy"

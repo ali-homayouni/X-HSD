@@ -3,13 +3,14 @@ import pandas as pd
 import numpy as np
 import emoji
 import wordsegment
-from config import OLID_PATH, GERMEVAL_PATH 
+from config import OLID_PATH, GERMEVAL_PATH, PERSIAN_PATH
 from utils import pad_sents, get_mask, get_lens
 import re
 
 DATASET_PATH = {
     'en': OLID_PATH,
     'de': GERMEVAL_PATH, 
+    'fa': PERSIAN_PATH,
     'train_en_test_en': OLID_PATH,
     'train_en_test_de': GERMEVAL_PATH,
     'train_de_test_de':GERMEVAL_PATH,
@@ -18,8 +19,10 @@ DATASET_PATH = {
 DATASET_DICT = {
     'en': 'olid-training-v1.0.tsv',
     'de': 'germeval2018.training.txt',
+    'fa': 'persian_train.csv',
     'de_ts' : 'germeval2018.test.txt',
     'en_ts' : 'germeval2018.test.txt',
+    'fa_ts' : 'persian_test.csv'
 }
 
 wordsegment.load()
@@ -36,6 +39,20 @@ def read_file(filepath: str, data='en'):
         label_a = np.array(df['subtask_a'].values)
         label_b = df['subtask_b'].values
         label_c = np.array(df['subtask_c'].values)
+
+        nums = len(df)
+
+    if data=='tain_fa_test_fa':
+        df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
+
+        ids = ids = np.array(range(1,len(df)+1))
+        tweets = np.array(df['tweet'].values)
+
+        # Process tweets
+        tweets = process_tweets(tweets)
+        label_a = np.array(df['class'].values)
+        label_b = None
+        label_c = None
 
         nums = len(df)
 
@@ -183,6 +200,14 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
         ids = np.array(df1['id'].values)
         tweets = np.array(df1['tweet'].values)
         labels = np.array(df2['label'].values)
+        nums = len(df1)
+
+    elif data == 'train_fa_test_fa':
+        data_path = os.path.join(DATASET_PATH[data], 'persian_test.csv')
+        df1 = pd.read_csv(data_path, sep='\t', keep_default_na=False, header=None)
+        ids = np.array(range(1,len(df1)+1))
+        tweets = np.array(df1['tweet'].values)
+        labels = np.array(df1['class'].values)
         nums = len(df1)
 
     elif data == 'train_de_test_de':

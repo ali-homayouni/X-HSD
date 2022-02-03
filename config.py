@@ -1,5 +1,6 @@
 OLID_PATH = './OLIDv1.0'
 GERMEVAL_PATH = './GermEval2018'
+PERSIAN_PATH  = './Persian'
 SAVE_PATH = './save'
 LABEL_DICT_OLID = {
     'a': {'OFF': 0, 'NOT': 1},
@@ -12,4 +13,7 @@ LABEL_DICT_GERMEVAL = {
 }
 LABEL_DICT_EN_DE = {
     'a': {'OFFENSE': 0, 'OTHER': 1, 'OFF': 0, 'NOT': 1},
+}
+LABEL_DICT_FA = {
+    'a': {'OFF': 0, 'NOT': 1},
 }
