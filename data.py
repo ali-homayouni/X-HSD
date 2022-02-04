@@ -332,6 +332,7 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
 def process_tweets(tweets):
     # Process tweets
     tweets = emoji2word(tweets)
+    tweets = remove_links(tweets)
     tweets = remove_usernames(tweets)
     tweets = replace_rare_words(tweets)
     tweets = remove_replicates(tweets)
@@ -339,6 +340,11 @@ def process_tweets(tweets):
     tweets = remove_useless_punctuation(tweets)
     tweets = np.array(tweets)
     return tweets
+
+def remove_links(sents):
+    for i, sent in enumerate(sents):
+        sents[i] = re.sub(r'^https?:\/\/.*[\r\n]*', 'http', sent, flags=re.MULTILINE)
+    return sents
 
 def remove_usernames(sents):
     for i, sent in enumerate(sents):
