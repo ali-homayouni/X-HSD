@@ -44,7 +44,7 @@ def read_file(filepath: str, data='en'):
         nums = len(df)
 
     elif data=='train_fa_test_fa':
-        df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
+        df = pd.read_csv(filepath, keep_default_na=False)
 
         ids = np.array(range(1,len(df)+1))
         tweets = np.array(df['tweet'].values)
@@ -205,7 +205,7 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
 
     elif data == 'train_fa_test_fa':
         data_path = os.path.join(DATASET_PATH[data], 'persian_test.csv')
-        df1 = pd.read_csv(data_path, sep='\t', keep_default_na=False, header=None)
+        df1 = pd.read_csv(data_path, keep_default_na=False)
         ids = np.array(range(1,len(df1)+1))
         tweets = np.array(df1['tweet'].values)
         labels = np.array(df1['class'].values)
