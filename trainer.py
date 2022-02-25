@@ -9,8 +9,10 @@ from torch import nn
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+import itertools
 # Local files
 from utils import save
 from config import LABEL_DICT_OLID
@@ -166,9 +168,26 @@ class Trainer():
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
         target_names = ['OFF', 'NOT']
+        np.savetxt(str(epoch)+'.out', y_pred_all, delimiter=',') 
+        
+        # offset = 1000
+        # for index in range(0, 3):
+        #     x = labels_all[index*offset:index*offset+offset]
+        #     y = y_pred_all[index*offset:index*offset+offset]
+        #     print(classification_report(x, y, target_names=target_names))
+        #     cm = confusion_matrix(x, y, labels=[1, 0])
+        #     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+        #     disp.plot()
+        #     plt.savefig('./img/cm/' + str(epoch) + '-' + str(index) +'.png')
+
+            # self.plot_confusion_matrix(cm, target_names)
+
         print(classification_report(labels_all, y_pred_all, target_names=target_names))
         cm = confusion_matrix(labels_all, y_pred_all, labels=[1, 0])
-        self.plot_confusion_matrix(cm, target_names, output_file=str(epoch)+'.png')
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+        disp.plot()
+        plt.savefig('./img/cm/' + str(epoch) + '-all' +'.png')
+        # self.plot_confusion_matrix(cm, target_names, output_file=str(epoch) + '-all' +'.png')
         print(f'Test loss = {loss:.4f}')
         print(f'Test Macro-F1 = {f1:.4f}')
 
@@ -231,10 +250,6 @@ class Trainer():
         http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 
         """
-        import matplotlib.pyplot as plt
-        import numpy as np
-        import itertools
-
         accuracy = np.trace(cm) / np.sum(cm).astype('float')
         misclass = 1 - accuracy
 
