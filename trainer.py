@@ -198,7 +198,7 @@ class Trainer():
                             title='Confusion matrix',
                             output_file='./output.png',
                             cmap=None,
-                            normalize=True):
+                            normalize=False):
         """
         given a sklearn confusion matrix (cm), make a nice plot
 
