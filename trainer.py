@@ -183,7 +183,7 @@ class Trainer():
             # self.plot_confusion_matrix(cm, target_names)
 
         print(classification_report(labels_all, y_pred_all, target_names=target_names))
-        cm = confusion_matrix(labels_all, y_pred_all, labels=[1, 0])
+        cm = confusion_matrix(labels_all, y_pred_all, labels=[0, 1])
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
         plt.savefig('./img/cm/' + str(epoch) + '-all' +'.png')

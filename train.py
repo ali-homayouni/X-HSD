@@ -16,7 +16,7 @@ DATASET_DICT = {
     'train_en_test_de': 'olid-training-v1.0.tsv',
     'train_de_test_de': 'germeval2018.training.txt',
     'train_de_test_en': 'germeval2018.training.txt',
-    'train_fa_test_fa': 'persian_train.csv',
+    'train_fa_test_fa': 'persian_train.xlsx',
     'train_ende_test_en': "dummy",
     'train_ende_test_de': "dummy",
     'train_ende_test_ende': "dummy"

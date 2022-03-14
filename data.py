@@ -21,10 +21,10 @@ DATASET_PATH = {
 DATASET_DICT = {
     'en': 'olid-training-v1.0.tsv',
     'de': 'germeval2018.training.txt',
-    'fa': 'persian_train.csv',
+    'fa': 'persian_train.xlsx',
     'de_ts' : 'germeval2018.test.txt',
     'en_ts' : 'germeval2018.test.txt',
-    'fa_ts' : 'persian_test.csv'
+    'fa_ts' : 'persian_test.xlsx'
 }
 
 wordsegment.load()
@@ -45,15 +45,15 @@ def read_file(filepath: str, data='en'):
         nums = len(df)
 
     elif data=='train_fa_test_fa':
-        df = pd.read_csv(filepath)
+        df = pd.read_excel(filepath)
 
         ids = np.array(range(1,len(df)+1))
         tweets = np.array(df['tweet'].values)
 
         # Process tweets
         tweets = process_tweets(tweets, fa=True)
-        df['class'] = df['class'].replace({'': 'NOT'})
-        df['class'] = df['class'].replace({np.nan: 'NOT'})
+        # df['class'] = df['class'].replace({'': 'NOT'})
+        # df['class'] = df['class'].replace({np.nan: 'NOT'})
 
         label_a = np.array(df['class'].values)
         label_b = None
@@ -247,13 +247,13 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
         nums = len(df1)
 
     elif data == 'train_fa_test_fa':
-        data_path = os.path.join(DATASET_PATH[data], 'persian_test.csv')
-        df1 = pd.read_csv(data_path)
+        data_path = os.path.join(DATASET_PATH[data], 'persian_test.xlsx')
+        df1 = pd.read_excel(data_path)
         ids = np.array(range(0,len(df1)+1))
         tweets = np.array(df1['tweet'].values)
         tweets = process_tweets(tweets, fa=True)
-        df1['class'] = df1['class'].replace({'': 'NOT'})
-        df1['class'] = df1['class'].replace({np.nan: 'NOT'})
+        # df1['class'] = df1['class'].replace({'': 'NOT'})
+        # df1['class'] = df1['class'].replace({np.nan: 'NOT'})
         labels = np.array(df1['class'].values)
         nums = len(df1)
 
@@ -425,26 +425,26 @@ def process_tweets(tweets, fa=False):
 
 def normalize(sents):
     for i, sent in enumerate(sents):
-      sents[i] = my_normalizer.normalize(sent)
+      sents[i] = my_normalizer.normalize(str(sent))
     return sents
 
 def remove_links(sents):
     for i, sent in enumerate(sents):
-        sents[i] = re.sub(r'^https?:\/\/.*[\r\n]*', 'http', sent, flags=re.MULTILINE)
+        sents[i] = re.sub(r'^https?:\/\/.*[\r\n]*', 'http', str(sent), flags=re.MULTILINE)
     return sents
 
 def remove_eng(sents):
     for i, sent in enumerate(sents):
-        sents[i] = re.sub('[a-zA-Z0-9]','',sent)
+        sents[i] = re.sub('[a-zA-Z0-9]','',str(sent))
     return sents
 
 def remove_usernames(sents):
     for i, sent in enumerate(sents):
-        sents[i] = re.sub('@[^\s]+','@USER',sent)
+        sents[i] = re.sub('@[^\s]+','@USER',str(sent))
     return sents
 
 def emoji2word(sents):
-    return [emoji.demojize(sent) for sent in sents]
+    return [emoji.demojize(str(sent)) for sent in sents]
 
 def remove_useless_punctuation(sents):
     for i, sent in enumerate(sents):
