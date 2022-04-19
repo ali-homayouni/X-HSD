@@ -210,7 +210,8 @@ class Trainer():
             filename = f'./save/models/{self.task_name}_{self.model_name}_{self.best_test_f1_m[0]}_seed{self.seed}.pt'
         else:
             filename = f'./save/models/{self.task_name}_{self.model_name}_{self.best_test_f1}_seed{self.seed}.pt'
-        save(copy.deepcopy(self.model.state_dict()), filename)
+        self.model.save(f'./save/models')
+        # save(copy.deepcopy(self.model.state_dict()), filename)
 
     def plot_confusion_matrix(cm,
                             target_names,

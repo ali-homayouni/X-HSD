@@ -65,6 +65,9 @@ class XLM_RoBERTa(nn.Module):
         loss, logits = outputs[:2]
         # return loss, logits
         return logits
+    
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
 
 class ParsBERT(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
