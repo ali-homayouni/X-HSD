@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from data import task_a, read_test_file
 from config import *
 from cli import get_args
-from utils import load
+from utils import load, save_tokenizer
 from datasets import HuggingfaceDataset, ImbalancedDatasetSampler
 from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT, ParsBERT
 from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup
@@ -79,6 +79,7 @@ if __name__ == '__main__':
         print(f'using xlm-roberta-{model_size} model.')
         model = XLM_RoBERTa(model_size, args=args, num_labels=num_labels)
         tokenizer = XLMRobertaTokenizer.from_pretrained(f'xlm-roberta-base')
+        save_tokenizer(tokenizer, './save/tokenizer')
         assert tokenizer != None
     elif model_name == 'pars-bert':
         print(f'using bert-{model_size}-parsbert-uncased.')

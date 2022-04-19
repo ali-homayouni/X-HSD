@@ -11,6 +11,16 @@ def save(toBeSaved, filename, mode='wb'):
     pickle.dump(toBeSaved, file)
     file.close()
 
+def save_hugging_face(model, dirname):
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    model.save(dirname)
+
+def save_tokenizer(tokenizer, dirname):
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    tokenizer.save_pretrained(dirname)
+
 def load(filename, mode='rb'):
     file = open(filename, mode)
     loaded = pickle.load(file)
