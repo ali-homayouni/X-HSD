@@ -28,7 +28,7 @@ class BERT(nn.Module):
 
 class BERTTWEET_FA(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
-        super(BERT, self).__init__()
+        super(BERTTWEET_FA, self).__init__()
         self.model = BertForSequenceClassification.from_pretrained(
             f'arm-on/BERTweet-FA',
             num_labels=num_labels,
