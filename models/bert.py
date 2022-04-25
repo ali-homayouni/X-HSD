@@ -45,6 +45,9 @@ class BERTTWEET_FA(nn.Module):
         logits = outputs[0]
         # return loss, logits
         return logits
+        
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
 
 class RoBERTa(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
