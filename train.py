@@ -90,6 +90,7 @@ if __name__ == '__main__':
         print(f'using bert-tweet-farsi.')
         model = BERTTWEET_FA(model_size, args=args, num_labels=num_labels)
         tokenizer = BertTokenizer.from_pretrained('arm-on/BERTweet-FA', model_max_length=130)
+        save_tokenizer(tokenizer, './save/tokenizer')
         assert tokenizer != None
     elif model_name == 'bert-multilingual':
         print(f'using bert-{model_size}-multilingual-uncased model.')
