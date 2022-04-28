@@ -8,7 +8,7 @@ from cli import get_args
 from utils import load, save_tokenizer
 from datasets import HuggingfaceDataset, ImbalancedDatasetSampler
 from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT, ParsBERT, BERTTWEET_FA
-from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup
+from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup, AutoTokenizer
 from trainer import Trainer
 
 DATASET_DICT = {
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     elif model_name == 'pars-bert':
         print(f'using bert-{model_size}-parsbert-uncased.')
         model = ParsBERT(model_size, args=args, num_labels=num_labels)
-        tokenizer = XLMRobertaTokenizer.from_pretrained(f'HooshvareLab/bert-base-parsbert-uncased')
+        tokenizer = AutoTokenizer.from_pretrained(f'HooshvareLab/bert-base-parsbert-uncased')
         save_tokenizer(tokenizer, './save/tokenizer')
         assert tokenizer != None
     elif model_name == 'bert-tweet':
