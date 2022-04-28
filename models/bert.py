@@ -80,8 +80,8 @@ class XLM_RoBERTa(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        for param in self.model.roberta.embeddings.parameters():
-            param.requires_grad = False
+        # for param in self.model.roberta.embeddings.parameters():
+        #     param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels):
         outputs = self.model(inputs, attention_mask=mask, labels=labels)
@@ -103,14 +103,17 @@ class ParsBERT(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        for param in self.model.roberta.embeddings.parameters():
-            param.requires_grad = False
+        # for param in self.model.roberta.embeddings.parameters():
+        #     param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels):
         outputs = self.model(inputs, attention_mask=mask, labels=labels)
         loss, logits = outputs[:2]
         # return loss, logits
         return logits
+
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
 
 class MultilingualBERT(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
@@ -131,6 +134,12 @@ class MultilingualBERT(nn.Module):
         logits = outputs[0]
         # return loss, logits
         return logits
+
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
+    
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
 
 class GE_BERT(nn.Module):
     def __init__(self, model_size, args, num_labels=2):

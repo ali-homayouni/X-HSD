@@ -85,6 +85,7 @@ if __name__ == '__main__':
         print(f'using bert-{model_size}-parsbert-uncased.')
         model = ParsBERT(model_size, args=args, num_labels=num_labels)
         tokenizer = XLMRobertaTokenizer.from_pretrained(f'bert-base-parsbert-uncased')
+        save_tokenizer(tokenizer, './save/tokenizer')
         assert tokenizer != None
     elif model_name == 'bert-tweet':
         print(f'using bert-tweet-farsi.')
@@ -96,6 +97,7 @@ if __name__ == '__main__':
         print(f'using bert-{model_size}-multilingual-uncased model.')
         model = MultilingualBERT(model_size, args=args, num_labels=num_labels)
         tokenizer = BertTokenizer.from_pretrained(f'bert-base-multilingual-uncased')
+        save_tokenizer(tokenizer, './save/tokenizer')
         assert tokenizer != None
     elif model_name == 'gebert':
         print(f'using bert-{model_size}-german-dbmdz-uncased model.')
