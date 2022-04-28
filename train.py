@@ -84,7 +84,7 @@ if __name__ == '__main__':
     elif model_name == 'pars-bert':
         print(f'using bert-{model_size}-parsbert-uncased.')
         model = ParsBERT(model_size, args=args, num_labels=num_labels)
-        tokenizer = XLMRobertaTokenizer.from_pretrained(f'bert-base-parsbert-uncased')
+        tokenizer = XLMRobertaTokenizer.from_pretrained(f'HooshvareLab/bert-base-parsbert-uncased')
         save_tokenizer(tokenizer, './save/tokenizer')
         assert tokenizer != None
     elif model_name == 'bert-tweet':
