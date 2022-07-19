@@ -140,8 +140,8 @@ def read_file(filepath: str, data='en'):
         tweets = np.array(list(tweets_en) + list(tweets_fa))
 
         # labels
-        label_a_en = list(df_en['subtask_a'].values)
-        label_a_fa = list(df_fa['class'].values)
+        label_a_en = list(df_en[TASK_A_LABEL].values)
+        label_a_fa = list(df_fa[TASK_A_LABEL].values)
         label_a = np.array(label_a_en + label_a_fa)
 
         nums = len(df_en) + len(df_fa)
@@ -159,18 +159,18 @@ def read_file(filepath: str, data='en'):
         df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
         
         ## IDS
-        ids_en = list(df_en['id'].values)
+        ids_en = list(df_en[ID_LABEL].values)
         ids_de = list(range(1,len(df_de)+1))
         ids = np.array(ids_en + ids_de)
         
         ## TWEETS
-        tweets_en = list(df_en['tweet'].values)
+        tweets_en = list(df_en[TWEET_LABEL].values)
         tweets_de = list(df_de[0].values)
         tweets = np.array(tweets_en + tweets_de)
         tweets = process_tweets(tweets)
 
         # Process tweets
-        label_a_en = list(df_en['subtask_a'].values)
+        label_a_en = list(df_en[TASK_A_LABEL].values)
         label_a_de = list(df_de[1].values)
         label_a = np.array(label_a_en + label_a_de)
 
@@ -183,14 +183,14 @@ def read_file(filepath: str, data='en'):
     elif data=='train_en_test_de':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
 
-        ids = np.array(df['id'].values)
-        tweets = np.array(df['tweet'].values)
+        ids = np.array(df[ID_LABEL].values)
+        tweets = np.array(df[TWEET_LABEL].values)
 
         # Process tweets
         tweets = process_tweets(tweets)
-        label_a = np.array(df['subtask_a'].values)
-        label_b = df['subtask_b'].values
-        label_c = np.array(df['subtask_c'].values)
+        label_a = np.array(df[TASK_A_LABEL].values)
+        label_b = df[TASK_B_LABEL].values
+        label_c = np.array(df[TASK_C_LABEL].values)
 
         nums = len(df)
     elif data=='train_de_test_en':
@@ -216,18 +216,18 @@ def read_file(filepath: str, data='en'):
         df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
         
         ## IDS
-        ids_en = list(df_en['id'].values)
+        ids_en = list(df_en[ID_LABEL].values)
         ids_de = list(range(1,len(df_de)+1))
         ids = np.array(ids_en + ids_de)
         
         ## TWEETS
-        tweets_en = list(df_en['tweet'].values)
+        tweets_en = list(df_en[TWEET_LABEL].values)
         tweets_de = list(df_de[0].values)
         tweets = np.array(tweets_en + tweets_de)
         tweets = process_tweets(tweets)
 
         # Process tweets
-        label_a_en = list(df_en['subtask_a'].values)
+        label_a_en = list(df_en[TASK_C_LABEL].values)
         label_a_de = list(df_de[1].values)
         label_a = np.array(label_a_en + label_a_de)
 

@@ -59,22 +59,23 @@ if __name__ == '__main__':
     num_labels = 3 if task == 'c' else 2
 
     # Set tokenizer for different models
+    exception_message = 'Unexpected model.(deleted), model_name : {}'.format(model_name)
     if model_name == 'bert':
         if task == 'all':
-            raise Exception(f'Unexpected model.(deleted), model_name : {model_name}')
+            raise Exception(exception_message)
         else:
             model = BERT(model_size, args=args, num_labels=num_labels)
         tokenizer = BertTokenizer.from_pretrained(f'bert-{model_size}-uncased')
     elif model_name == 'roberta':
         if task == 'all':
-            raise Exception(f'Unexpected model.(deleted), model_name : {model_name}')
+            raise Exception(exception_message)
         else:
             model = RoBERTa(model_size, args=args, num_labels=num_labels)
         tokenizer = RobertaTokenizer.from_pretrained(f'roberta-{model_size}')
     elif model_name == 'bert-gate' and task == 'all':
-        raise Exception(f'Unexpected model.(deleted), model_name : {model_name}')
+        raise Exception(exception_message)
     elif model_name == 'roberta-gate' and task == 'all':
-        raise Exception(f'Unexpected model.(deleted), model_name : {model_name}')
+        raise Exception(exception_message)
     elif model_name == 'xlm-roberta':
         print(f'using xlm-roberta-{model_size} model.')
         model = XLM_RoBERTa(model_size, args=args, num_labels=num_labels)

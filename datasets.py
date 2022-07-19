@@ -28,16 +28,16 @@ class HuggingfaceDataset(Dataset):
         self.labels = labels
         self.task = task
         self.data = data
+        self.label_dict = LABEL_DICT[self.data][self.task]
 
     def __len__(self):
         return self.labels.shape[0]
 
     def __getitem__(self, idx):
-        this_LABEL_DICT = LABEL_DICT[self.data][self.task]
         input = self.input_ids[idx]
         length = self.lens[idx]
         mask = self.mask[idx]
-        label = torch.tensor(this_LABEL_DICT[self.labels[idx]])
+        label = torch.tensor(self.label_dict[self.labels[idx]])
         return input, length, mask, label
 
 class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):
