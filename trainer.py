@@ -14,7 +14,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import itertools
 # Local files
-from utils import save, save_hugging_face
+from utils import save, save_hugging_face, save_image
 from config import LABEL_DICT_OLID
 
 class Trainer():
@@ -186,7 +186,7 @@ class Trainer():
         cm = confusion_matrix(labels_all, y_pred_all, labels=[0, 1])
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
-        plt.savefig('./img/cm/' + str(epoch) + '-all' +'.png')
+        save_image(epoch)
         # self.plot_confusion_matrix(cm, target_names, output_file=str(epoch) + '-all' +'.png')
         print(f'Test loss = {loss:.4f}')
         print(f'Test Macro-F1 = {f1:.4f}')

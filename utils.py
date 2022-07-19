@@ -2,6 +2,13 @@ import os
 import pickle
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
+
+def save_image(epoch):
+    dirname = './img/cm/'
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)    
+    plt.savefig(dirname + str(epoch) + '-all' +'.png')
 
 def save(toBeSaved, filename, mode='wb'):
     dirname = os.path.dirname(filename)
