@@ -2,6 +2,7 @@ OLID_PATH = './OLIDv1.0'
 GERMEVAL_PATH = './GermEval2018'
 PERSIAN_PATH  = './Persian'
 SAVE_PATH = './save'
+
 LABEL_DICT_OLID = {
     'a': {'OFF': 0, 'NOT': 1},
     'b': {'TIN': 0, 'UNT': 1, 'NULL': 2},
@@ -17,3 +18,9 @@ LABEL_DICT_EN_DE = {
 LABEL_DICT_FA = {
     'a': {'OFF': 0, 'NOT': 1},
 }
+
+ID_LABEL = 'id'
+TWEET_LABEL = 'tweet'
+TASK_A_LABEL = 'subtask_a'
+TASK_B_LABEL = 'subtask_b'
+TASK_C_LABEL = 'subtask_c'

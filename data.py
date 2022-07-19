@@ -2,11 +2,15 @@ import os
 import pandas as pd
 import numpy as np
 import emoji
+
 import wordsegment
 from parsivar import Normalizer
+
 from config import OLID_PATH, GERMEVAL_PATH, PERSIAN_PATH
+from config import TWEET_LABEL, TASK_A_LABEL, TASK_B_LABEL, TASK_C_LABEL, ID_LABEL
 from utils import pad_sents, get_mask, get_lens
 import re
+
 my_normalizer = Normalizer()
 DATASET_PATH = {
     'en': OLID_PATH,
@@ -33,14 +37,14 @@ def read_file(filepath: str, data='en'):
     if data=='train_en_test_en':
         df = pd.read_csv(filepath, sep='\t', keep_default_na=False)
 
-        ids = np.array(df['id'].values)
-        tweets = np.array(df['tweet'].values)
+        ids = np.array(df[ID_LABEL].values)
+        tweets = np.array(df[TWEET_LABEL].values)
 
         # Process tweets
         tweets = process_tweets(tweets)
-        label_a = np.array(df['subtask_a'].values)
-        label_b = df['subtask_b'].values
-        label_c = np.array(df['subtask_c'].values)
+        label_a = np.array(df[TASK_A_LABEL].values)
+        label_b = df[TASK_B_LABEL].values
+        label_c = np.array(df[TASK_C_LABEL].values)
 
         nums = len(df)
 
@@ -48,14 +52,14 @@ def read_file(filepath: str, data='en'):
         df = pd.read_excel(filepath)
 
         ids = np.array(range(1,len(df)+1))
-        tweets = np.array(df['tweet'].values)
+        tweets = np.array(df[TWEET_LABEL].values)
 
         # Process tweets
         tweets = process_tweets(tweets, fa=True)
         # df['class'] = df['class'].replace({'': 'NOT'})
         # df['class'] = df['class'].replace({np.nan: 'NOT'})
 
-        label_a = np.array(df['class'].values)
+        label_a = np.array(df[TASK_A_LABEL].values)
         label_b = None
         label_c = None
 
@@ -85,18 +89,18 @@ def read_file(filepath: str, data='en'):
         df_de = pd.read_csv(filepath_de, sep='\t', keep_default_na=False, header=None)
         
         ## IDS
-        ids_en = list(df_en['id'].values)
+        ids_en = list(df_en[ID_LABEL].values)
         ids_de = list(range(1,len(df_de)+1))
         ids = np.array(ids_en + ids_de)
         
         ## TWEETS
-        tweets_en = list(df_en['tweet'].values)
+        tweets_en = list(df_en[TWEET_LABEL].values)
         tweets_de = list(df_de[0].values)
         tweets = np.array(tweets_en + tweets_de)
         tweets = process_tweets(tweets)
 
         # Process tweets
-        label_a_en = list(df_en['subtask_a'].values)
+        label_a_en = list(df_en[TASK_A_LABEL].values)
         label_a_de = list(df_de[1].values)
         label_a = np.array(label_a_en + label_a_de)
 
@@ -116,18 +120,18 @@ def read_file(filepath: str, data='en'):
         
         ## IDS
         
-        ids_en = list(df_en['id'].values)
+        ids_en = list(df_en[ID_LABEL].values)
         ids_fa = list(range(1,len(df_fa)+1))
         ids = np.array(ids_en + ids_fa)
         
         ## TWEETS
-        df_en['tweet'] = df_en['tweet'].apply(str)
-        tweets_en = list(df_en['tweet'].values)
-        df_fa['tweet'] = df_fa['tweet'].apply(str)
-        tweets_fa = list(df_fa['tweet'].values)
+        df_en[TWEET_LABEL] = df_en[TWEET_LABEL].apply(str)
+        tweets_en = list(df_en[TWEET_LABEL].values)
+        df_fa[TWEET_LABEL] = df_fa[TWEET_LABEL].apply(str)
+        tweets_fa = list(df_fa[TWEET_LABEL].values)
 
-        df_fa['class'] = df_fa['class'].replace({'': 'NOT'})
-        df_fa['class'] = df_fa['class'].replace({np.nan: 'NOT'})
+        df_fa[TASK_A_LABEL] = df_fa[TASK_A_LABEL].replace({'': 'NOT'})
+        df_fa[TASK_A_LABEL] = df_fa[TASK_A_LABEL].replace({np.nan: 'NOT'})
 
         tweets_en = np.array(tweets_en)
         tweets_fa = np.array(tweets_fa)
