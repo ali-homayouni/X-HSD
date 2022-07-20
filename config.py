@@ -3,24 +3,15 @@ GERMEVAL_PATH = './GermEval2018'
 PERSIAN_PATH  = './Persian'
 SAVE_PATH = './save'
 
-LABEL_DICT_OLID = {
-    'a': {'OFF': 0, 'NOT': 1},
-    'b': {'TIN': 0, 'UNT': 1, 'NULL': 2},
-    'c': {'IND': 0, 'GRP': 1, 'OTH': 2, 'NULL': 3}
-}
-LABEL_DICT_GERMEVAL = {
-    'a': {'OFFENSE': 0, 'OTHER': 1},
-    'b': {'OTHER': 0, 'INSULT': 1, 'PROFANITY': 2, 'ABUSE': 3},
-}
-LABEL_DICT_EN_DE = {
-    'a': {'OFFENSE': 0, 'OTHER': 1, 'OFF': 0, 'NOT': 1},
-}
-LABEL_DICT_FA = {
-    'a': {'OFF': 0, 'NOT': 1},
-}
+LABEL_DICT_OLID = dict()
+LABEL_DICT_GERMEVAL = dict()
+LABEL_DICT_EN_DE = dict()
+LABEL_DICT_FA = dict()
 
 ID_LABEL = 'id'
 TWEET_LABEL = 'tweet'
-TASK_A_LABEL = 'subtask_a'
-TASK_B_LABEL = 'subtask_b'
-TASK_C_LABEL = 'subtask_c'
+
+TASK_PREFIX = 'subtask_'
+TASK_A_LABEL = TASK_PREFIX + 'a'
+TASK_B_LABEL = TASK_PREFIX + 'b'
+TASK_C_LABEL = TASK_PREFIX + 'c'

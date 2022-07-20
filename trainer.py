@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import itertools
 # Local files
 from utils import save, save_hugging_face, save_image
+from datasets import LABEL_DICT
 from config import LABEL_DICT_OLID
 
 class Trainer():
@@ -36,6 +37,7 @@ class Trainer():
         device: str,
         patience: int,
         task_name: str,
+        dataset_name: str,
         model_name: str,
         seed: int
     ):
@@ -50,6 +52,7 @@ class Trainer():
         self.device = device
         self.patience = patience
         self.task_name = task_name
+        self.dataset_name = dataset_name
         self.model_name = model_name
         self.seed = seed
         self.datetimestr = datetime.datetime.now().strftime('%Y-%b-%d_%H:%M:%S')
@@ -167,7 +170,8 @@ class Trainer():
 
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
-        target_names = ['OFF', 'NOT']
+        target_names = LABEL_DICT[self.dataset_name][self.task_name].keys()
+        labels = LABEL_DICT[self.dataset_name][self.task_name].values()
         np.savetxt(str(epoch)+'.out', y_pred_all, delimiter=',') 
         
         # offset = 1000
@@ -183,7 +187,7 @@ class Trainer():
             # self.plot_confusion_matrix(cm, target_names)
 
         print(classification_report(labels_all, y_pred_all, target_names=target_names))
-        cm = confusion_matrix(labels_all, y_pred_all, labels=[0, 1])
+        cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
         save_image(epoch)

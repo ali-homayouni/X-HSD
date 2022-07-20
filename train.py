@@ -5,8 +5,8 @@ from torch.utils.data import DataLoader
 from data import task_a, read_test_file
 from config import *
 from cli import get_args
-from utils import load, save_tokenizer
-from datasets import HuggingfaceDataset, ImbalancedDatasetSampler
+from utils import load, save_tokenizer, make_dict
+from datasets import HuggingfaceDataset, ImbalancedDatasetSampler, LABEL_DICT
 from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT, ParsBERT, BERTTWEET_FA
 from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup, AutoTokenizer
 from trainer import Trainer
@@ -56,7 +56,10 @@ if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"] = args['cuda']
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-    num_labels = 3 if task == 'c' else 2
+    # Create related dict
+    make_dict(dataset, TRAIN_PATH)
+
+    num_labels = len(LABEL_DICT[dataset][task])
 
     # Set tokenizer for different models
     exception_message = 'Unexpected model.(deleted), model_name : {}'.format(model_name)

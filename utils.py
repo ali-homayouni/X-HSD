@@ -3,6 +3,19 @@ import pickle
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+
+from datasets import LABEL_DICT
+from config import TASK_PREFIX
+
+def make_dict(data, path):
+    label_dict = LABEL_DICT[data]
+    dataset = pd.read_csv(path)
+    tasks = [col for col in dataset if col.startswith(TASK_PREFIX)]
+    for task in tasks:
+        keys = dataset[task].unique()
+        values = range(len(keys))
+        label_dict[task] = dict(zip(keys, values))
 
 def save_image(epoch):
     dirname = './img/cm/'
