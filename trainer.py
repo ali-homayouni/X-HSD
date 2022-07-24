@@ -170,8 +170,8 @@ class Trainer():
 
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
-        target_names = LABEL_DICT[self.dataset_name][self.task_name].keys()
-        labels = LABEL_DICT[self.dataset_name][self.task_name].values()
+        target_names = list(LABEL_DICT[self.dataset_name][self.task_name].keys())
+        labels = list(LABEL_DICT[self.dataset_name][self.task_name].values())
         np.savetxt(str(epoch)+'.out', y_pred_all, delimiter=',') 
         
         # offset = 1000
