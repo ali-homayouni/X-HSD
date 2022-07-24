@@ -246,6 +246,7 @@ class Trainer():
         plt.legend(loc='upper left')
         filename = './img/loss/' + 'loss-' + str(epochs) +'.png'
         save_image(filename)
+        plt.show()
 
     def plot_confusion_matrix(cm,
                             target_names,
