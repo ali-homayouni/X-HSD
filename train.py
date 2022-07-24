@@ -3,10 +3,10 @@ from unittest.util import _MAX_LENGTH
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
-from data import task_a, read_test_file
+from data import task_a, read_test_file, make_dict
 from config import *
 from cli import get_args
-from utils import load, save_tokenizer, make_dict
+from utils import load, save_tokenizer
 from datasets import HuggingfaceDataset, ImbalancedDatasetSampler, LABEL_DICT
 from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT, ParsBERT, BERTTWEET_FA
 from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup, AutoTokenizer
