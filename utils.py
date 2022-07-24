@@ -5,21 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from datasets import LABEL_DICT
-from data import read_file
-from config import TASKS
-
-def make_dict(path, data):
-    label_dict = LABEL_DICT[data]
-    _, __, ___, label_a, label_b, label_c = read_file(path, data)
-    labels = dict(zip(TASKS, [label_a, label_b, label_c]))
-    for task in labels:
-        if labels[task]:
-            keys = labels[task].unique()
-            values = range(len(keys))
-            label_dict[task] = dict(zip(keys, values))
-
-
 def save_image(epoch):
     dirname = './img/cm/'
     if not os.path.exists(dirname):

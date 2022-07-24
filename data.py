@@ -7,8 +7,9 @@ import wordsegment
 from parsivar import Normalizer
 
 from config import OLID_PATH, GERMEVAL_PATH, PERSIAN_PATH
-from config import TWEET_LABEL, TASK_A_LABEL, TASK_B_LABEL, TASK_C_LABEL, ID_LABEL
+from config import TWEET_LABEL, TASK_A_LABEL, TASK_B_LABEL, TASK_C_LABEL, ID_LABEL, TASKS
 from utils import pad_sents, get_mask, get_lens
+from datasets import LABEL_DICT
 import re
 
 my_normalizer = Normalizer()
@@ -31,7 +32,15 @@ DATASET_DICT = {
     'fa_ts' : 'persian_test.xlsx'
 }
 
-wordsegment.load()
+def make_dict(path, data):
+    label_dict = LABEL_DICT[data]
+    _, __, ___, label_a, label_b, label_c = read_file(path, data)
+    labels = dict(zip(TASKS, [label_a, label_b, label_c]))
+    for task in labels:
+        if labels[task]:
+            keys = labels[task].unique()
+            values = range(len(keys))
+            label_dict[task] = dict(zip(keys, values))
 
 def read_file(filepath: str, data='en'):
     if data=='train_en_test_en':
@@ -411,6 +420,7 @@ def read_test_file(task, tokenizer, truncate=512, data='en'):
 
     return ids, token_ids, lens, mask, labels
 
+wordsegment.load()
 
 def process_tweets(tweets, fa=False):
     # Process tweets
