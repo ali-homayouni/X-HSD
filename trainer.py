@@ -14,7 +14,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import itertools
 # Local files
-from utils import save, save_hugging_face, save_image
+from utils import save, save_hugging_face, save_image, save_log
 from datasets import LABEL_DICT
 from config import LABEL_DICT_OLID
 
@@ -71,12 +71,17 @@ class Trainer():
 
     def train(self):
         for epoch in range(1, self.epochs+1):
-            print(f'Epoch {epoch}')
-            print('=' * 20)
+            log = f'Epoch {epoch}\n'
+            log += '=' * 20 + '\n'
+            save_log(log)
+            print(log)
             self.train_one_epoch()
             self.test(epoch)
-            print(f'Best test f1: {self.best_test_f1:.4f}')
-            print('=' * 20)
+
+            log = f'Best test f1: {self.best_test_f1:.4f}' + '\n'
+            log += '=' * 20 + '\n'
+            save_log(log)
+            print(log)
 
         print('Saving results ...')
         save(
@@ -129,8 +134,10 @@ class Trainer():
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
 
-        print(f'Train loss = {loss:.4f}')
-        print(f'Train Macro-F1 = {f1:.4f}')
+        log = f'Train loss = {loss:.4f}' + '\n'
+        log += f'Train Macro-F1 = {f1:.4f}' + '\n'
+        save_log(log)
+        print(log)
 
         self.train_losses.append(loss)
         self.train_f1.append(f1)
@@ -186,14 +193,19 @@ class Trainer():
 
             # self.plot_confusion_matrix(cm, target_names)
 
-        print(classification_report(labels_all, y_pred_all, target_names=target_names))
+        log = classification_report(labels_all, y_pred_all, target_names=target_names) + '\n'
+        print(log)
+
         cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
         save_image(epoch)
         # self.plot_confusion_matrix(cm, target_names, output_file=str(epoch) + '-all' +'.png')
-        print(f'Test loss = {loss:.4f}')
-        print(f'Test Macro-F1 = {f1:.4f}')
+
+        log = f'Test loss = {loss:.4f}' + '\n'
+        log += f'Test Macro-F1 = {f1:.4f}' + '\n'
+        save_log(log)
+        print(log)
 
         self.test_losses.append(loss)
         self.test_f1.append(f1)
