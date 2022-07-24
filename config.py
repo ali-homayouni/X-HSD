@@ -11,6 +11,8 @@ LABEL_DICT_FA = dict()
 ID_LABEL = 'id'
 TWEET_LABEL = 'tweet'
 
+TASKS = ['a', 'b', 'c']
+
 TASK_PREFIX = 'subtask_'
 TASK_A_LABEL = TASK_PREFIX + 'a'
 TASK_B_LABEL = TASK_PREFIX + 'b'

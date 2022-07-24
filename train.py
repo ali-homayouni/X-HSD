@@ -193,7 +193,7 @@ if __name__ == '__main__':
         seed=args['seed']
     )
 
-    if task in ['a', 'b', 'c']:
+    if task in TASKS:
         trainer.train()
     else:
         trainer.train_m()

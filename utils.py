@@ -6,16 +6,19 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from datasets import LABEL_DICT
-from config import TASK_PREFIX
+from data import read_file
+from config import TASKS
 
-def make_dict(data, path):
+def make_dict(path, data):
     label_dict = LABEL_DICT[data]
-    dataset = pd.read_csv(path)
-    tasks = [col for col in dataset if col.startswith(TASK_PREFIX)]
-    for task in tasks:
-        keys = dataset[task].unique()
-        values = range(len(keys))
-        label_dict[task] = dict(zip(keys, values))
+    _, __, ___, label_a, label_b, label_c = read_file(path, data)
+    labels = dict(zip(TASKS, [label_a, label_b, label_c]))
+    for task in labels:
+        if labels[task]:
+            keys = labels[task].unique()
+            values = range(len(keys))
+            label_dict[task] = dict(zip(keys, values))
+
 
 def save_image(epoch):
     dirname = './img/cm/'
@@ -27,9 +30,8 @@ def save(toBeSaved, filename, mode='wb'):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
-    file = open(filename, mode)
-    pickle.dump(toBeSaved, file)
-    file.close()
+    with open(filename, mode) as file:
+        pickle.dump(toBeSaved, file)
 
 def save_hugging_face(model, dirname):
     if not os.path.exists(dirname):
@@ -42,9 +44,8 @@ def save_tokenizer(tokenizer, dirname):
     tokenizer.save_pretrained(dirname)
 
 def load(filename, mode='rb'):
-    file = open(filename, mode)
-    loaded = pickle.load(file)
-    file.close()
+    with open(filename, mode) as file:
+        loaded = pickle.load(file)
     return loaded
 
 def pad_sents(sents, pad_token):
