@@ -38,7 +38,7 @@ def make_dict(path, data):
     labels = dict(zip(TASKS, [label_a, label_b, label_c]))
     for task in labels:
         if labels[task] is not None:
-            keys = labels[task].unique()
+            keys = np.unique(labels[task])
             values = range(len(keys))
             label_dict[task] = dict(zip(keys, values))
 
