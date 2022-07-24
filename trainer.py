@@ -238,15 +238,14 @@ class Trainer():
         plt.figure()
         epochs = len(self.train_losses)
         x = range(epochs)
-        plt.plot(x, self.train_losses, label='Train')
-        plt.plot(x, self.test_losses, label='Test')
+        plt.plot(self.train_losses, label='Train')
+        plt.plot(self.test_losses, label='Test')
         plt.title('Model loss')
         plt.ylabel('Loss')
         plt.xlabel('Epoch')
         plt.legend(loc='upper left')
         filename = './img/loss/' + 'loss-' + str(epochs) +'.png'
         save_image(filename)
-        plt.show()
 
     def plot_confusion_matrix(cm,
                             target_names,
