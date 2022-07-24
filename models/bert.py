@@ -17,8 +17,9 @@ class BERT(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.bert.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels=None):
         outputs = self.model(inputs, attention_mask=mask)
@@ -37,8 +38,9 @@ class BERTTWEET_FA(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.bert.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels=None):
         outputs = self.model(inputs, attention_mask=mask)
@@ -60,8 +62,9 @@ class RoBERTa(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.roberta.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels):
         outputs = self.model(inputs, attention_mask=mask, labels=labels)
@@ -80,8 +83,9 @@ class XLM_RoBERTa(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.roberta.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels):
         outputs = self.model(inputs, attention_mask=mask, labels=labels)
@@ -103,8 +107,9 @@ class ParsBERT(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.roberta.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels):
         outputs = self.model(inputs, attention_mask=mask, labels=labels)
@@ -126,8 +131,9 @@ class MultilingualBERT(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.bert.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels=None):
         outputs = self.model(inputs, attention_mask=mask)
@@ -152,8 +158,9 @@ class GE_BERT(nn.Module):
         )
 
         # Freeze embeddings' parameters for saving memory
-        # for param in self.model.bert.embeddings.parameters():
-        #     param.requires_grad = False
+        if args['freeze']:
+            for param in self.model.embeddings.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels=None):
         outputs = self.model(inputs, attention_mask=mask)
