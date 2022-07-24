@@ -37,7 +37,7 @@ def make_dict(path, data):
     _, __, ___, label_a, label_b, label_c = read_file(path, data)
     labels = dict(zip(TASKS, [label_a, label_b, label_c]))
     for task in labels:
-        if labels[task] is None:
+        if labels[task] is not None:
             keys = labels[task].unique()
             values = range(len(keys))
             label_dict[task] = dict(zip(keys, values))
