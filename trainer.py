@@ -75,8 +75,11 @@ class Trainer():
             log += '=' * 20 + '\n'
             save_log(log)
             print(log)
+
             self.train_one_epoch()
             self.test(epoch)
+
+            self.plot_losses()
 
             log = f'Best test f1: {self.best_test_f1:.4f}' + '\n'
             log += '=' * 20 + '\n'
@@ -199,7 +202,8 @@ class Trainer():
         cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
-        save_image(epoch)
+        filename = './img/cm/' + str(epoch) + '-all' +'.png'
+        save_image(filename)
         # self.plot_confusion_matrix(cm, target_names, output_file=str(epoch) + '-all' +'.png')
 
         log = f'Test loss = {loss:.4f}' + '\n'
@@ -229,6 +233,19 @@ class Trainer():
         dirname = f'./save/models'
         save_hugging_face(self.model, dirname)
         # save(copy.deepcopy(self.model.state_dict()), filename)
+
+    def plot_losses(self):
+        plt.figure()
+        epochs = len(self.train_losses)
+        x = range(epochs)
+        plt.plot(x, self.train_losses, label='Train')
+        plt.plot(x, self.test_losses, label='Test')
+        plt.title('Model loss')
+        plt.ylabel('Loss')
+        plt.xlabel('Epoch')
+        plt.legend(loc='upper left')
+        filename = './img/loss/' + 'loss-' + str(epochs) +'.png'
+        save_image(filename)
 
     def plot_confusion_matrix(cm,
                             target_names,

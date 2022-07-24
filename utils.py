@@ -12,11 +12,11 @@ def save_log(log):
     with open(dirname + 'log.txt', 'a') as file:
         file.write(log)
 
-def save_image(epoch):
-    dirname = './img/cm/'
+def save_image(filename):
+    dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)    
-    plt.savefig(dirname + str(epoch) + '-all' +'.png')
+    plt.savefig(filename)
 
 def save(toBeSaved, filename, mode='wb'):
     dirname = os.path.dirname(filename)
