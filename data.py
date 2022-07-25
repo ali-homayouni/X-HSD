@@ -68,7 +68,7 @@ def read_file(filepath: str, data='en'):
         # df['class'] = df['class'].replace({'': 'NOT'})
         # df['class'] = df['class'].replace({np.nan: 'NOT'})
 
-        label_a = np.array(df[TASK_A_LABEL].values)
+        label_a = np.array(df['class'].values)
         label_b = None
         label_c = None
 
@@ -139,8 +139,8 @@ def read_file(filepath: str, data='en'):
         df_fa[TWEET_LABEL] = df_fa[TWEET_LABEL].apply(str)
         tweets_fa = list(df_fa[TWEET_LABEL].values)
 
-        df_fa[TASK_A_LABEL] = df_fa[TASK_A_LABEL].replace({'': 'NOT'})
-        df_fa[TASK_A_LABEL] = df_fa[TASK_A_LABEL].replace({np.nan: 'NOT'})
+        df_fa['class'] = df_fa['class'].replace({'': 'NOT'})
+        df_fa['class'] = df_fa['class'].replace({np.nan: 'NOT'})
 
         tweets_en = np.array(tweets_en)
         tweets_fa = np.array(tweets_fa)
@@ -150,7 +150,7 @@ def read_file(filepath: str, data='en'):
 
         # labels
         label_a_en = list(df_en[TASK_A_LABEL].values)
-        label_a_fa = list(df_fa[TASK_A_LABEL].values)
+        label_a_fa = list(df_fa['class'].values)
         label_a = np.array(label_a_en + label_a_fa)
 
         nums = len(df_en) + len(df_fa)
