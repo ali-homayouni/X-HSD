@@ -197,6 +197,7 @@ class Trainer():
             # self.plot_confusion_matrix(cm, target_names)
 
         log = classification_report(labels_all, y_pred_all, target_names=target_names) + '\n'
+        save_log(log)
         print(log)
 
         cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
