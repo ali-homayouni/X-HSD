@@ -9,7 +9,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, multilabel_confusion_matrix
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import itertools
@@ -39,6 +39,8 @@ class Trainer():
         task_name: str,
         dataset_name: str,
         model_name: str,
+        num_labels: int,
+        multilabel: bool,
         seed: int
     ):
         self.model = model
@@ -54,6 +56,8 @@ class Trainer():
         self.task_name = task_name
         self.dataset_name = dataset_name
         self.model_name = model_name
+        self.num_labels = num_labels
+        self.multilabel = multilabel
         self.seed = seed
         self.datetimestr = datetime.datetime.now().strftime('%Y-%b-%d_%H:%M:%S')
 
@@ -101,25 +105,29 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Training'):
             iters_per_epoch += 1
-
+            total = torch.nn.functional.one_hot(labels, num_classes=self.num_labels).type_as(logits) if self.multilabel else labels
             if labels_all is None:
                 labels_all = labels.numpy()
             else:
-                labels_all = np.concatenate((labels_all, labels.numpy()))
+                labels_all = np.concatenate((labels_all, total.numpy()))
 
             inputs = inputs.to(device=self.device)
             lens = lens.to(device=self.device)
             mask = mask.to(device=self.device)
             labels = labels.to(device=self.device)
-
+            total = total.to(device=self.device)
             self.optimizer.zero_grad()
 
             with torch.set_grad_enabled(True):
                 # Forward
-                logits = self.model(inputs, lens, mask, labels)
-                _loss = self.criterion(logits, labels)
+                logits = self.model(inputs, lens, mask)
+                _loss = self.criterion(logits, total)
                 loss += _loss.item()
-                y_pred = logits.argmax(dim=1).cpu().numpy()
+                if self.multilabel:
+                    threshold = torch.tensor([0.5]).to(self.device)
+                    y_pred = (logits > threshold).float() * 1
+                else:
+                    y_pred = logits.argmax(dim=1).cpu().numpy()
 
                 if y_pred_all is None:
                     y_pred_all = y_pred
@@ -156,21 +164,26 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Testing'):
             iters_per_epoch += 1
-
+            total = torch.nn.functional.one_hot(labels, num_classes=self.num_labels).type_as(logits) if self.multilabel else labels
             if labels_all is None:
                 labels_all = labels.numpy()
             else:
-                labels_all = np.concatenate((labels_all, labels.numpy()))
+                labels_all = np.concatenate((labels_all, total.numpy()))
 
             inputs = inputs.to(device=self.device)
             lens = lens.to(device=self.device)
             mask = mask.to(device=self.device)
             labels = labels.to(device=self.device)
+            total = total.to(device=self.device)
 
             with torch.set_grad_enabled(False):
-                logits = self.model(inputs, lens, mask, labels)
-                _loss = self.criterion(logits, labels)
-                y_pred = logits.argmax(dim=1).cpu().numpy()
+                logits = self.model(inputs, lens, mask)
+                _loss = self.criterion(logits, total)
+                if self.multilabel:
+                    threshold = torch.tensor([0.5]).to(self.device)
+                    y_pred = (logits > threshold).float() * 1
+                else:
+                    y_pred = logits.argmax(dim=1).cpu().numpy()
                 loss += _loss.item()
 
                 if y_pred_all is None:
@@ -182,7 +195,7 @@ class Trainer():
         f1 = f1_score(labels_all, y_pred_all, average='macro')
         target_names = list(LABEL_DICT[self.dataset_name][self.task_name].keys())
         labels = list(LABEL_DICT[self.dataset_name][self.task_name].values())
-        np.savetxt(str(epoch)+'.out', y_pred_all, delimiter=',') 
+        np.savetxt('./out/' + str(epoch)+'.out', y_pred_all, delimiter=',') 
         
         # offset = 1000
         # for index in range(0, 3):
@@ -200,7 +213,10 @@ class Trainer():
         save_log(log)
         print(log)
 
-        cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
+        if self.multilabel:
+            cm = multilabel_confusion_matrix(labels_all, y_pred_all, labels=labels)
+        else:
+            cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
         filename = './img/cm/' + str(epoch) + '-all' +'.png'

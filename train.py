@@ -191,6 +191,8 @@ if __name__ == '__main__':
         task_name=task,
         dataset_name=dataset,
         model_name=model_name,
+        num_labels=num_labels,
+        multilabel=args['multilabel'],
         seed=args['seed']
     )
 

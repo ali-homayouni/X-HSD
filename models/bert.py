@@ -24,7 +24,6 @@ class BERT(nn.Module):
     def forward(self, inputs, lens, mask, labels=None):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
-        # return loss, logits
         return logits
 
 class BERTTWEET_FA(nn.Module):
@@ -42,10 +41,9 @@ class BERTTWEET_FA(nn.Module):
             for param in self.model.embeddings.parameters():
                 param.requires_grad = False
 
-    def forward(self, inputs, lens, mask, labels=None):
+    def forward(self, inputs, lens, mask):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
-        # return loss, logits
         return logits
         
     def save(self, filepath):
@@ -66,10 +64,9 @@ class RoBERTa(nn.Module):
             for param in self.model.embeddings.parameters():
                 param.requires_grad = False
 
-    def forward(self, inputs, lens, mask, labels):
-        outputs = self.model(inputs, attention_mask=mask, labels=labels)
-        loss, logits = outputs[:2]
-        # return loss, logits
+    def forward(self, inputs, lens, mask):
+        outputs = self.model(inputs, attention_mask=mask)
+        logits = outputs[0]
         return logits
 
 class XLM_RoBERTa(nn.Module):
@@ -87,10 +84,9 @@ class XLM_RoBERTa(nn.Module):
             for param in self.model.embeddings.parameters():
                 param.requires_grad = False
 
-    def forward(self, inputs, lens, mask, labels):
-        outputs = self.model(inputs, attention_mask=mask, labels=labels)
-        loss, logits = outputs[:2]
-        # return loss, logits
+    def forward(self, inputs, lens, mask):
+        outputs = self.model(inputs, attention_mask=mask)
+        logits = outputs[0]
         return logits
     
     def save(self, filepath):
@@ -111,10 +107,9 @@ class ParsBERT(nn.Module):
             for param in self.model.embeddings.parameters():
                 param.requires_grad = False
 
-    def forward(self, inputs, lens, mask, labels):
-        outputs = self.model(inputs, attention_mask=mask, labels=labels)
-        loss, logits = outputs[:2]
-        # return loss, logits
+    def forward(self, inputs, lens, mask):
+        outputs = self.model(inputs, attention_mask=mask)
+        logits = outputs[0]
         return logits
 
     def save(self, filepath):
@@ -135,10 +130,9 @@ class MultilingualBERT(nn.Module):
             for param in self.model.embeddings.parameters():
                 param.requires_grad = False
 
-    def forward(self, inputs, lens, mask, labels=None):
+    def forward(self, inputs, lens, mask):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
-        # return loss, logits
         return logits
 
     def save(self, filepath):
@@ -162,8 +156,7 @@ class GE_BERT(nn.Module):
             for param in self.model.embeddings.parameters():
                 param.requires_grad = False
 
-    def forward(self, inputs, lens, mask, labels=None):
+    def forward(self, inputs, lens, mask):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
-        # return loss, logits
         return logits
