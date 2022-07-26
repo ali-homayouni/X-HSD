@@ -119,7 +119,6 @@ if __name__ == '__main__':
         model.load_state_dict(load(args['ckpt']))
 
     # Read in data depends on different subtasks
-    # label_orders = {'a': ['OFF', 'NOT'], 'b': ['TIN', 'UNT'], 'c': ['IND', 'GRP', 'OTH']}
     if task in ['a']:
         data_methods = {'a': task_a}
         ids, token_ids, lens, mask, labels = data_methods[task](TRAIN_PATH, tokenizer=tokenizer, truncate=truncate, data=dataset)
