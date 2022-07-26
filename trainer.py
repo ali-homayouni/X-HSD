@@ -105,6 +105,7 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Training'):
             iters_per_epoch += 1
+            labels = labels['labels']
             total = torch.nn.functional.one_hot(labels, num_classes=self.num_labels).type_as(logits) if self.multilabel else labels
             if labels_all is None:
                 labels_all = labels.numpy()
@@ -164,6 +165,7 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Testing'):
             iters_per_epoch += 1
+            labels = labels['labels']
             total = torch.nn.functional.one_hot(labels, num_classes=self.num_labels).type_as(logits) if self.multilabel else labels
             if labels_all is None:
                 labels_all = labels.numpy()

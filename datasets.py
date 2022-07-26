@@ -43,7 +43,7 @@ class HuggingfaceDataset(Dataset):
         length = self.lens[idx]
         mask = self.mask[idx]
         total = get_labels(self.labels[idx])
-        label = torch.tensor([self.label_dict[i] for i in total])
+        label = {'label': torch.tensor([self.label_dict[i] for i in total])}
         return input, length, mask, label
 
 class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):
