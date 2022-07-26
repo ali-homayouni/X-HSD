@@ -1,4 +1,5 @@
 import argparse
+from xmlrpc.client import Boolean
 
 def get_args():
     parser = argparse.ArgumentParser(description='BERT-Based Multi-Task Learning for Offensive Language Detection')
@@ -15,6 +16,7 @@ def get_args():
     parser.add_argument('-mo', '--model', help='Which model to use', type=str, required=True)
     parser.add_argument('-ms', '--model-size', help='Which size of model to use', type=str, required=False, default='base')
     parser.add_argument('-cl', '--clip', help='Use clip to gradients', action='store_true')
+    parser.add_argument('-ml', '--multilabel', help='Multilabel or singlelabel classification', type=bool, required=False, default=False)
     parser.add_argument('-fr', '--freeze', help='Freeze the embedding layer or not to use less GPU memory', type=bool, required=False, default=False)
     parser.add_argument('-lw', '--loss-weights', help='Weights for all losses', nargs='+', type=float, required=False, default=[1, 1, 1, 1])
     parser.add_argument('-sc', '--scheduler', help='Use scheduler to optimizer', action='store_true')

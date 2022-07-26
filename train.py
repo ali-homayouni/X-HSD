@@ -161,7 +161,7 @@ if __name__ == '__main__':
         'test': DataLoader(dataset=datasets['test'], batch_size=bs)
     }
 
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.BCEWithLogitsLoss() if args['multilabel'] else torch.nn.CrossEntropyLoss()
 
     if args['scheduler']:
         optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=wd)
