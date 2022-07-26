@@ -138,6 +138,7 @@ if __name__ == '__main__':
             lens=lens,
             mask=mask,
             labels=labels,
+            num_labels=num_labels,
             task=task,
             data=dataset
         ),
@@ -146,6 +147,7 @@ if __name__ == '__main__':
             lens=test_lens,
             mask=test_mask,
             labels=test_labels,
+            num_labels=num_labels,
             task=task,
             data=dataset
         )
@@ -191,7 +193,6 @@ if __name__ == '__main__':
         task_name=task,
         dataset_name=dataset,
         model_name=model_name,
-        num_labels=num_labels,
         multilabel=args['multilabel'],
         seed=args['seed']
     )

@@ -39,7 +39,6 @@ class Trainer():
         task_name: str,
         dataset_name: str,
         model_name: str,
-        num_labels: int,
         multilabel: bool,
         seed: int
     ):
@@ -56,7 +55,6 @@ class Trainer():
         self.task_name = task_name
         self.dataset_name = dataset_name
         self.model_name = model_name
-        self.num_labels = num_labels
         self.multilabel = multilabel
         self.seed = seed
         self.datetimestr = datetime.datetime.now().strftime('%Y-%b-%d_%H:%M:%S')
@@ -105,17 +103,15 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Training'):
             iters_per_epoch += 1
-            labels = labels['labels']
-            total = torch.nn.functional.one_hot(labels, num_classes=self.num_labels).type_as(logits) if self.multilabel else labels
+            total = labels if self.multilabel else labels.max(dim=0)
             if labels_all is None:
-                labels_all = labels.numpy()
+                labels_all = total.numpy()
             else:
                 labels_all = np.concatenate((labels_all, total.numpy()))
 
             inputs = inputs.to(device=self.device)
             lens = lens.to(device=self.device)
             mask = mask.to(device=self.device)
-            labels = labels.to(device=self.device)
             total = total.to(device=self.device)
             self.optimizer.zero_grad()
 
@@ -124,9 +120,10 @@ class Trainer():
                 logits = self.model(inputs, lens, mask)
                 _loss = self.criterion(logits, total)
                 loss += _loss.item()
+
                 if self.multilabel:
                     threshold = torch.tensor([0.5]).to(self.device)
-                    y_pred = (logits > threshold).float() * 1
+                    y_pred = (torch.sigmoid(logits) > threshold).float() * 1
                 else:
                     y_pred = logits.argmax(dim=1).cpu().numpy()
 
@@ -165,25 +162,24 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Testing'):
             iters_per_epoch += 1
-            labels = labels['labels']
-            total = torch.nn.functional.one_hot(labels, num_classes=self.num_labels).type_as(logits) if self.multilabel else labels
+            total = labels if self.multilabel else labels.max(dim=0)
             if labels_all is None:
-                labels_all = labels.numpy()
+                labels_all = total.numpy()
             else:
                 labels_all = np.concatenate((labels_all, total.numpy()))
 
             inputs = inputs.to(device=self.device)
             lens = lens.to(device=self.device)
             mask = mask.to(device=self.device)
-            labels = labels.to(device=self.device)
             total = total.to(device=self.device)
 
             with torch.set_grad_enabled(False):
                 logits = self.model(inputs, lens, mask)
                 _loss = self.criterion(logits, total)
+
                 if self.multilabel:
                     threshold = torch.tensor([0.5]).to(self.device)
-                    y_pred = (logits > threshold).float() * 1
+                    y_pred = (torch.sigmoid(logits) > threshold).float() * 1
                 else:
                     y_pred = logits.argmax(dim=1).cpu().numpy()
                 loss += _loss.item()
