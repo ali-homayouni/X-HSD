@@ -20,6 +20,11 @@ LABEL_DICT = {
 
     'en_de': LABEL_DICT_EN_DE,
 }
+
+SEPERATOR = ','
+
+def get_labels(labels):
+    return labels.strip().split(SEPERATOR)
 class HuggingfaceDataset(Dataset):
     def __init__(self, input_ids, lens, mask, labels, task, data='en'):
         self.input_ids = torch.tensor(input_ids)
@@ -37,7 +42,8 @@ class HuggingfaceDataset(Dataset):
         input = self.input_ids[idx]
         length = self.lens[idx]
         mask = self.mask[idx]
-        label = torch.tensor(self.label_dict[self.labels[idx]])
+        total = get_labels(self.labels[idx])
+        label = torch.tensor([self.label_dict[i] for i in total])
         return input, length, mask, label
 
 class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):

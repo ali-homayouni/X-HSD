@@ -9,7 +9,7 @@ from parsivar import Normalizer
 from config import OLID_PATH, GERMEVAL_PATH, PERSIAN_PATH
 from config import TWEET_LABEL, TASK_A_LABEL, TASK_B_LABEL, TASK_C_LABEL, ID_LABEL, TASKS
 from utils import pad_sents, get_mask, get_lens
-from datasets import LABEL_DICT
+from datasets import LABEL_DICT, get_labels
 import re
 
 my_normalizer = Normalizer()
@@ -38,7 +38,8 @@ def make_dict(path, data):
     labels = dict(zip(TASKS, [label_a, label_b, label_c]))
     for task in labels:
         if labels[task] is not None:
-            keys = np.unique(labels[task])
+            total = [get_labels(i) for i in labels[task]]
+            keys = np.unique(np.hstack(total))
             values = range(len(keys))
             label_dict[task] = dict(zip(keys, values))
 
