@@ -122,7 +122,7 @@ class Trainer():
                 loss += _loss.item()
 
                 if self.multilabel:
-                    threshold = torch.tensor([0.5]).to(self.device)
+                    threshold = torch.tensor([0.5])
                     y_pred = (torch.sigmoid(logits) > threshold).float() * 1
                 else:
                     y_pred = logits.argmax(dim=1)
@@ -178,7 +178,7 @@ class Trainer():
                 _loss = self.criterion(logits, total)
 
                 if self.multilabel:
-                    threshold = torch.tensor([0.5]).to(self.device)
+                    threshold = torch.tensor([0.5])
                     y_pred = (torch.sigmoid(logits) > threshold).float() * 1
                 else:
                     y_pred = logits.argmax(dim=1)
