@@ -123,12 +123,13 @@ class Trainer():
 
                 if self.multilabel:
                     threshold = torch.tensor([0.5])
-                    y_pred = (torch.sigmoid(logits) > threshold).float() * 1
+                    y_pred = torch.sigmoid(logits).cpu()
+                    y_pred = (y_pred > threshold).float().numpy()
                 else:
-                    y_pred = logits.argmax(dim=1)
+                    y_pred = logits.argmax(dim=1).cpu().numpy()
 
                 if y_pred_all is None:
-                    y_pred_all = y_pred.cpu().numpy()
+                    y_pred_all = y_pred
                 else:
                     y_pred_all = np.concatenate((y_pred_all, y_pred))
 
@@ -179,13 +180,14 @@ class Trainer():
 
                 if self.multilabel:
                     threshold = torch.tensor([0.5])
-                    y_pred = (torch.sigmoid(logits) > threshold).float() * 1
+                    y_pred = torch.sigmoid(logits).cpu()
+                    y_pred = (y_pred > threshold).float().numpy()
                 else:
-                    y_pred = logits.argmax(dim=1)
+                    y_pred = logits.argmax(dim=1).cpu().numpy()
                 loss += _loss.item()
 
                 if y_pred_all is None:
-                    y_pred_all = y_pred.cpu().numpy()
+                    y_pred_all = y_pred
                 else:
                     y_pred_all = np.concatenate((y_pred_all, y_pred))
 
