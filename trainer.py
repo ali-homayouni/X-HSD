@@ -213,12 +213,14 @@ class Trainer():
 
         if self.multilabel:
             cm = multilabel_confusion_matrix(labels_all, y_pred_all, labels=labels)
+            filename = './out/' + str(epoch) + '_cm.out'
+            save_text(filename, cm, fmt='%s')
         else:
             cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
-        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
-        disp.plot()
-        filename = './img/cm/' + str(epoch) + '-all' +'.png'
-        save_image(filename)
+            disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+            disp.plot()
+            filename = './img/cm/' + str(epoch) + '-all' +'.png'
+            save_image(filename)
         # self.plot_confusion_matrix(cm, target_names, output_file=str(epoch) + '-all' +'.png')
 
         log = f'Test loss = {loss:.4f}' + '\n'

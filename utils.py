@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def save_text(filename, y_pred_all):
+def save_text(filename, y_pred_all, fmt='%.18e'):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)  
-    np.savetxt(filename, y_pred_all, delimiter=',')
+    np.savetxt(filename, y_pred_all, delimiter=',', fmt=fmt)
 
 def save_log(log):
     dirname = './log/'
