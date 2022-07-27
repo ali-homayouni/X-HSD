@@ -5,6 +5,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
+def save_text(filename, y_pred_all):
+    dirname = os.path.dirname(filename)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)  
+    np.savetxt(filename, y_pred_all, delimiter=',')
+
 def save_log(log):
     dirname = './log/'
     if not os.path.exists(dirname):

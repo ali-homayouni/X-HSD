@@ -14,7 +14,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import itertools
 # Local files
-from utils import save, save_hugging_face, save_image, save_log
+from utils import save, save_hugging_face, save_image, save_log, save_text
 from datasets import LABEL_DICT
 from config import LABEL_DICT_OLID
 
@@ -193,7 +193,7 @@ class Trainer():
         f1 = f1_score(labels_all, y_pred_all, average='macro')
         target_names = list(LABEL_DICT[self.dataset_name][self.task_name].keys())
         labels = list(LABEL_DICT[self.dataset_name][self.task_name].values())
-        np.savetxt('./out/' + str(epoch)+'.out', y_pred_all, delimiter=',') 
+        save_text('./out/' + str(epoch)+'.out', y_pred_all)
         
         # offset = 1000
         # for index in range(0, 3):
