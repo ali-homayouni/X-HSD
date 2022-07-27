@@ -6,11 +6,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def save_text(filename, y_pred_all, fmt='%.18e'):
+def save_text(filename, array):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)  
-    np.savetxt(filename, y_pred_all, delimiter=',', fmt=fmt)
+    with open(filename, 'w') as file:
+        file.write('# Array shape: {}\n'.format(array.shape))
+        for array_slice in array:
+            np.savetxt(file, array_slice, fmt='%-7.2f')
+            file.write('############################\n')
+
 
 def save_log(log):
     dirname = './log/'

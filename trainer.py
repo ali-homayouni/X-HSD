@@ -214,7 +214,7 @@ class Trainer():
         if self.multilabel:
             cm = multilabel_confusion_matrix(labels_all, y_pred_all, labels=labels)
             filename = './out/' + str(epoch) + '_cm.out'
-            save_text(filename, cm, fmt='%s')
+            save_text(filename, cm)
         else:
             cm = confusion_matrix(labels_all, y_pred_all, labels=labels)
             disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
