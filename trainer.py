@@ -130,7 +130,7 @@ class Trainer():
                 if y_pred_all is None:
                     y_pred_all = y_pred.cpu().numpy()
                 else:
-                    y_pred_all = np.concatenate((y_pred_all, y_pred))
+                    y_pred_all = np.concatenate((y_pred_all, y_pred.cpu().numpy()))
 
                 # Backward
                 _loss.backward()
@@ -179,15 +179,15 @@ class Trainer():
 
                 if self.multilabel:
                     threshold = torch.tensor([0.5]).to(self.device)
-                    y_pred = (torch.sigmoid(logits).to(self.device) > threshold).float().cpu().numpy()
+                    y_pred = (torch.sigmoid(logits).to(self.device) > threshold).float()
                 else:
-                    y_pred = logits.argmax(dim=1).cpu().numpy()
+                    y_pred = logits.argmax(dim=1)
                 loss += _loss.item()
 
                 if y_pred_all is None:
                     y_pred_all = y_pred
                 else:
-                    y_pred_all = np.concatenate((y_pred_all, y_pred))
+                    y_pred_all = np.concatenate((y_pred_all, y_pred.cpu().numpy()))
 
         loss /= iters_per_epoch
         f1 = f1_score(labels_all, y_pred_all, average='macro')
