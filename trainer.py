@@ -103,7 +103,7 @@ class Trainer():
         iters_per_epoch = 0
         for inputs, lens, mask, labels in tqdm(dataloader, desc='Training'):
             iters_per_epoch += 1
-            total = labels if self.multilabel else labels.max(dim=0).indices
+            total = labels if self.multilabel else labels.max(dim=1).indices
             if labels_all is None:
                 labels_all = total.numpy()
             else:
