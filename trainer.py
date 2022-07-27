@@ -185,7 +185,7 @@ class Trainer():
                 loss += _loss.item()
 
                 if y_pred_all is None:
-                    y_pred_all = y_pred
+                    y_pred_all = y_pred.cpu().numpy()
                 else:
                     y_pred_all = np.concatenate((y_pred_all, y_pred.cpu().numpy()))
 
