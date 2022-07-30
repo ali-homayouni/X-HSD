@@ -12,8 +12,13 @@ def save_text(filename, array):
         os.makedirs(dirname)  
     with open(filename, 'w') as file:
         file.write('# Array shape: {}\n'.format(array.shape))
-        for array_slice in array:
-            np.savetxt(file, array_slice, fmt='%-7.2f')
+        # Check if it's multilabel confusion matrix or not
+        if array.ndim == 3: 
+            for array_slice in array:
+                np.savetxt(file, array_slice, fmt='%-7.2f')
+                file.write('############################\n')
+        else:
+            np.savetxt(file, array, fmt='%-7.2f')
             file.write('############################\n')
 
 
