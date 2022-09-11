@@ -18,7 +18,7 @@ class BERT(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask, labels=None):
@@ -38,7 +38,7 @@ class BERTTWEET_FA(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
@@ -61,7 +61,7 @@ class RoBERTa(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
@@ -81,7 +81,7 @@ class XLM_RoBERTa(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
@@ -104,7 +104,7 @@ class ParsBERT(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
@@ -127,7 +127,7 @@ class MultilingualBERT(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
@@ -153,7 +153,7 @@ class GE_BERT(nn.Module):
 
         # Freeze embeddings' parameters for saving memory
         if args['freeze']:
-            for param in self.model.embeddings.parameters():
+            for param in self.model.bert.bert.parameters():
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
