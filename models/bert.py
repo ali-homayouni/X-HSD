@@ -25,6 +25,9 @@ class BERT(nn.Module):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
         return logits
+    
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
 
 class BERTTWEET_FA(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
@@ -68,6 +71,9 @@ class RoBERTa(nn.Module):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
         return logits
+    
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
 
 class XLM_RoBERTa(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
@@ -137,9 +143,6 @@ class MultilingualBERT(nn.Module):
 
     def save(self, filepath):
         self.model.save_pretrained(filepath)
-    
-    def save(self, filepath):
-        self.model.save_pretrained(filepath)
 
 class GE_BERT(nn.Module):
     def __init__(self, model_size, args, num_labels=2):
@@ -160,3 +163,6 @@ class GE_BERT(nn.Module):
         outputs = self.model(inputs, attention_mask=mask)
         logits = outputs[0]
         return logits
+
+    def save(self, filepath):
+        self.model.save_pretrained(filepath)
