@@ -187,8 +187,8 @@ class MiniBert(nn.Module):
                 param.requires_grad = False
 
     def forward(self, inputs, lens, mask):
-        sequence_output, pooled_output = self.bert(inputs, attention_mask=mask)
-        pooled_output = self.dropout(pooled_output)
+        outputs = self.bert(inputs, attention_mask=mask)
+        pooled_output = self.dropout(outputs[1])
         out = self.fc1(pooled_output)
         out = self.fc2(out)
         return out
