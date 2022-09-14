@@ -40,7 +40,8 @@ class Trainer():
         dataset_name: str,
         model_name: str,
         multilabel: bool,
-        seed: int
+        seed: int,
+        save_model: bool,
     ):
         self.model = model
         self.epochs = epochs
@@ -57,6 +58,7 @@ class Trainer():
         self.model_name = model_name
         self.multilabel = multilabel
         self.seed = seed
+        self.save = save_model
         self.datetimestr = datetime.datetime.now().strftime('%Y-%b-%d_%H:%M:%S')
 
         # Evaluation results
@@ -232,7 +234,8 @@ class Trainer():
         self.test_f1.append(f1)
         if f1 > self.best_test_f1:
             self.best_test_f1 = f1
-            self.save_model()
+            if self.save:
+                self.save_model()
 
     def calc_f1(self, labels, y_pred):
         return np.array([

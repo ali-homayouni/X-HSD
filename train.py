@@ -1,3 +1,4 @@
+from ast import arg
 import os
 from unittest.util import _MAX_LENGTH
 import numpy as np
@@ -8,7 +9,7 @@ from config import *
 from cli import get_args
 from utils import load, save_tokenizer
 from datasets import HuggingfaceDataset, ImbalancedDatasetSampler, LABEL_DICT
-from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT, ParsBERT, BERTTWEET_FA
+from models.bert import BERT, RoBERTa, XLM_RoBERTa, MultilingualBERT, GE_BERT, ParsBERT, BERTTWEET_FA, MiniBert
 from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, get_cosine_schedule_with_warmup, AutoTokenizer
 from trainer import Trainer
 
@@ -69,6 +70,9 @@ if __name__ == '__main__':
             raise Exception(exception_message)
         else:
             model = BERT(model_size, args=args, num_labels=num_labels)
+        tokenizer = BertTokenizer.from_pretrained(f'bert-{model_size}-uncased')
+    elif model_name == 'minibert':
+        model = MiniBert(model_size, args=args, word_embedding=args['dim'], num_labels=num_labels)
         tokenizer = BertTokenizer.from_pretrained(f'bert-{model_size}-uncased')
     elif model_name == 'roberta':
         if task == 'all':
@@ -193,7 +197,8 @@ if __name__ == '__main__':
         dataset_name=dataset,
         model_name=model_name,
         multilabel=args['multilabel'],
-        seed=args['seed']
+        seed=args['seed'],
+        save_model=args['save'],
     )
 
     if task in TASKS:

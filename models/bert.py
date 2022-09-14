@@ -3,6 +3,7 @@ from torch import nn
 from transformers import (
     BertForSequenceClassification, 
     RobertaForSequenceClassification,
+    BertModel,
     )
 
 
@@ -166,3 +167,29 @@ class GE_BERT(nn.Module):
 
     def save(self, filepath):
         self.model.save_pretrained(filepath)
+
+class MiniBert(nn.Module):
+    def __init__(self, model_size, args, word_embedding, num_labels=2):
+        super(MiniBert, self).__init__()
+        self.bert = BertModel.from_pretrained(
+            f'bert-{model_size}-uncased',
+            hidden_dropout_prob=args['hidden_dropout'],
+            attention_probs_dropout_prob=args['attention_dropout']
+        )
+        self.embedding_dim = self.bert.config.hidden_size
+        self.fc1 = nn.Linear(self.embedding_dim, word_embedding)
+        self.fc2 = nn.Linear(word_embedding, num_labels)
+
+        # Freeze embeddings' parameters for saving memory
+        if args['freeze']:
+            for param in self.bert.parameters():
+                param.requires_grad = False
+
+    def forward(self, inputs, lens, mask):
+        sequence_output, pooled_output = self.bert(inputs, attention_mask=mask)
+        out = self.fc1(sequence_output[:, 0, :])
+        out = self.fc2(out)
+        return out
+
+    def save(self, filepath):
+        self.bert.save_pretrained(filepath)
