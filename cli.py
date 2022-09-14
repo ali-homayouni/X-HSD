@@ -28,6 +28,7 @@ def get_args():
     # Transformers
     parser.add_argument('-ad', '--attention-dropout', help='transformer attention dropout', type=float, required=False, default=0.1)
     parser.add_argument('-hd', '--hidden-dropout', help='transformer hidden dropout', type=float, required=False, default=0.1)
+    parser.add_argument('-d', '--dim', help='Word embedding dimension', required=False, type=int, default=25)
 
     # LSTM
     parser.add_argument('-dr', '--dropout', help='dropout', type=float, required=False, default=0.1)
