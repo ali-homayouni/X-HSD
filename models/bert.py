@@ -177,6 +177,7 @@ class MiniBert(nn.Module):
             attention_probs_dropout_prob=args['attention_dropout']
         )
         self.embedding_dim = self.bert.config.hidden_size
+        self.dropout = nn.Dropout(args['hidden_dropout'])
         self.fc1 = nn.Linear(self.embedding_dim, word_embedding)
         self.fc2 = nn.Linear(word_embedding, num_labels)
 
@@ -187,7 +188,8 @@ class MiniBert(nn.Module):
 
     def forward(self, inputs, lens, mask):
         sequence_output, pooled_output = self.bert(inputs, attention_mask=mask)
-        out = self.fc1(sequence_output[:, 0, :])
+        pooled_output = self.dropout(pooled_output)
+        out = self.fc1(pooled_output)
         out = self.fc2(out)
         return out
 
